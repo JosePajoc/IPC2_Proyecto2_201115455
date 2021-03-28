@@ -22,14 +22,12 @@ class listaVertical():
     def insertarInicio(self, nuevoNodo):
         self.inicio.arriba = nuevoNodo
         nuevoNodo.abajo = self.inicio
-        inicio = nuevoNodo
-        print('si I')
+        self.inicio = nuevoNodo
     
     def insertarFinal(self, nuevoNodo):
         self.fin.abajo = nuevoNodo
         nuevoNodo.arriba = self.fin
-        fin = nuevoNodo
-        print('si F')
+        self.fin = nuevoNodo
     
     def insertarMedio(self, nuevoNodo):
         temporal1 = self.inicio
@@ -50,11 +48,12 @@ class listaVertical():
                 temporal = temporal.abajo
 
 
+#Prueba de lista vertical para columnas de la matriz
 lista1 = listaVertical()
 lista1.insertar(nodo(10, 0, 1))
-lista1.insertar(nodo(50, 0, 2))
-lista1.insertar(nodo(70, 0, 3))
-#lista1.insertar(nodo(30, 0, 4))
-#lista1.insertar(nodo(15, 0, 5))
+lista1.insertar(nodo(50, 0, 3))
+lista1.insertar(nodo(70, 0, 2))
+lista1.insertar(nodo(30, 0, 5))
+lista1.insertar(nodo(15, 0, 4))
 
 lista1.mostrarListaVertical()
