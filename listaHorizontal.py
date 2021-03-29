@@ -1,58 +1,59 @@
 from nodo import nodo
 
-class listaVertical():
+class listaHorizontal():
     def __init__(self):                                     #Crear lista con apuntadores a nulo
         self.inicio = None
         self.fin = None
 
-    def verVacioVertical(self):                             #Verificar si existen elementos en la lista
+    def verVacioHorizontal(self):                           #Verificar si existen elementos en la lista
         return self.inicio == None
     
     def insertar(self, nuevoNodo):                          #Insertar nodos según la posición de la fila en los métodos
-        if self.verVacioVertical():
+        if self.verVacioHorizontal():
             self.inicio = nuevoNodo
             self.fin = nuevoNodo
-        elif nuevoNodo.fila < self.inicio.fila:
+        elif nuevoNodo.columna < self.inicio.columna:
             self.insertarInicio(nuevoNodo)
-        elif nuevoNodo.fila > self.fin.fila:
+        elif nuevoNodo.columna > self.fin.columna:
             self.insertarFinal(nuevoNodo)
         else:
             self.insertarMedio(nuevoNodo)
 
     def insertarInicio(self, nuevoNodo):                    #Insertar nodo al inicio de la lista y cambiar apuntador
-        self.inicio.arriba = nuevoNodo
-        nuevoNodo.abajo = self.inicio
+        self.inicio.izquierda = nuevoNodo
+        nuevoNodo.derecha = self.inicio
         self.inicio = nuevoNodo
     
     def insertarFinal(self, nuevoNodo):                     #Insertar nodo al final de la lista y cambiar apuntador
-        self.fin.abajo = nuevoNodo
-        nuevoNodo.arriba = self.fin
+        self.fin.derecha = nuevoNodo
+        nuevoNodo.izquierda = self.fin
         self.fin = nuevoNodo
     
     def insertarMedio(self, nuevoNodo):                     #Insertar nodo en medio de la lista y cambiar apuntadores
         temporal1 = self.inicio
-        while temporal1.fila < nuevoNodo.fila:
-            temporal1 = temporal1.abajo
-        temporal2 = temporal1.arriba                        #Para obtener el nodo anterior al deseado y así cambiar sus apuntadores
-        temporal2.abajo = nuevoNodo
-        nuevoNodo.arriba = temporal2
-        temporal1.arriba = nuevoNodo
-        nuevoNodo.abajo = temporal1
+        while temporal1.columna < nuevoNodo.columna:
+            temporal1 = temporal1.derecha
+        temporal2 = temporal1.izquierda                     #Para obtener el nodo anterior al deseado y así cambiar sus apuntadores
+        temporal2.derecha = nuevoNodo
+        nuevoNodo.izquierda = temporal2
+        temporal1.izquierda = nuevoNodo
+        nuevoNodo.derecha = temporal1
     
-    def mostrarListaVertical(self):
-        if self.verVacioVertical() == False:
+    def mostrarListaHorizontal(self):
+        if self.verVacioHorizontal() == False:
             temporal = self.inicio
             while temporal is not None:
                 print("Columna " , temporal.columna , " fila: " , temporal.fila , " dato: " , temporal.dato)
-                temporal = temporal.abajo
+                temporal = temporal.derecha
+
 
 '''
-lista1 = listaVertical()
-lista1.insertar(nodo(10, 0, 1))
-lista1.insertar(nodo(50, 0, 3))
-lista1.insertar(nodo(70, 0, 2))
-lista1.insertar(nodo(30, 0, 5))
-lista1.insertar(nodo(15, 0, 4))
+lista1 = listaHorizontal()
+lista1.insertar(nodo(10, 1, 0))
+lista1.insertar(nodo(50, 3, 0))
+lista1.insertar(nodo(70, 2, 0))
+lista1.insertar(nodo(30, 5, 0))
+lista1.insertar(nodo(15, 4, 0))
 
-lista1.mostrarListaVertical()
+lista1.mostrarListaHorizontal()
 '''

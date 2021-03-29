@@ -1,5 +1,5 @@
 class nodo():
-    def __init__(self, dato, columna, fila):            #Nodo ortogonal que poseera el dato y sus índicess
+    def __init__(self, dato, columna, fila):            #Nodo ortogonal que poseera el dato, sus índices y apuntadores
         self.dato = dato
         self.columna = columna
         self.fila = fila

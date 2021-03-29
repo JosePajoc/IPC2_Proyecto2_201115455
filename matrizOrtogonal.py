@@ -1,0 +1,46 @@
+from nodo import nodo
+from nodoListaCabeCol import nodoCabeceraColumna
+from nodoListaCabeCol import listaCabeceraVertical
+from nodoListaCabeFila import nodoCabeceraFila
+from nodoListaCabeFila import listaCabeceraHorizontal
+
+class matrizOrtogonal():
+    def __init__(self):
+        self.columnas = listaCabeceraVertical()
+        self.filas = listaCabeceraHorizontal()
+    
+    def insertar(self, dato, columna, fila):
+        nodoNuevo = nodo(dato, columna, fila)
+        if self.columnas.buscarCabeceraVertical(columna) == None:       #Se crean los índices si estos no existen
+            self.columnas.insertar(columna)
+        if self.filas.buscarCabeceraHorizontal(fila) == None:
+            self.filas.insertar(fila)
+        temporalColumna = self.columnas.buscarCabeceraVertical(columna) #Buscando y obteniendo los índices de la matriz
+        temporalFila = self.filas.buscarCabeceraHorizontal(fila)
+        temporalColumna.columnaDatos.insertar(nodoNuevo)
+        temporalFila.filaDatos.insertar(nodoNuevo)
+
+        print('Dato: ', nodoNuevo.dato, ' Columna: ', nodoNuevo.columna, ' Fila: ', nodoNuevo.fila)
+    
+    def llenado(self, columnas, filas):
+        dato = 1
+        for col in range(columnas):
+            for fil in range(filas):
+                self.insertar(dato, col, fil)
+                dato = dato + 1
+    
+    def mostrarMatriz(self, columnas, filas):
+        salida = ''
+        for fil in range(filas):
+            temporal = self.filas.buscarCabeceraHorizontal(fil).filaDatos
+            temporal2 = temporal.inicio
+            for col in range(columnas):
+                salida = salida + str(temporal2.dato) + ' | '
+                temporal2 = temporal2.abajo
+            print(salida)
+            salida = ''
+
+
+matriz1 = matrizOrtogonal()
+matriz1.llenado(3, 3)
+matriz1.mostrarMatriz(3,3)
