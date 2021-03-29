@@ -19,14 +19,13 @@ class matrizOrtogonal():
         temporalFila = self.filas.buscarCabeceraHorizontal(fila)
         temporalColumna.columnaDatos.insertar(nodoNuevo)
         temporalFila.filaDatos.insertar(nodoNuevo)
-
-        print('Dato: ', nodoNuevo.dato, ' Columna: ', nodoNuevo.columna, ' Fila: ', nodoNuevo.fila)
+        #print('Dato: ', nodoNuevo.dato, ' Columna: ', nodoNuevo.columna, ' Fila: ', nodoNuevo.fila)
     
     def llenado(self, columnas, filas):
         dato = 1
         for col in range(columnas):
             for fil in range(filas):
-                self.insertar(dato, col, fil)
+                self.insertar(dato, fil, col)
                 dato = dato + 1
     
     def mostrarMatriz(self, columnas, filas):
@@ -44,3 +43,4 @@ class matrizOrtogonal():
 matriz1 = matrizOrtogonal()
 matriz1.llenado(3, 3)
 matriz1.mostrarMatriz(3,3)
+#print(matriz1.filas.buscarCabeceraHorizontal(1).filaDatos.inicio.derecha.derecha.arriba.dato)
