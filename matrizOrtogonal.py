@@ -31,12 +31,12 @@ class matrizOrtogonal():
     
     def mostrarMatriz(self, columnas, filas):
         salida = ''
-        for fil in range(filas):
-            temporal = self.filas.buscarCabeceraHorizontal(fil).filaDatos
+        for i in range(filas):
+            temporal = self.filas.buscarCabeceraHorizontal(i).filaDatos
             temporal2 = temporal.inicio
-            for col in range(columnas):
+            for j in range(columnas):
                 salida = salida + str(temporal2.dato) + ' | '
-                temporal2 = temporal2.abajo
+                temporal2 = temporal2.derecha
             print(salida)
             salida = ''
 

@@ -3,8 +3,8 @@ from listaHorizontal import listaHorizontal
 class nodoCabeceraFila():                                   #Nodo para identificar las columnas de la matriz
     def __init__(self, fila):
         self.fila = fila                                    #único dato se da la posición a utilizar en las columnas cabeceras
-        self.arriba = None
-        self.abajo = None
+        self.anterior = None
+        self.siguiente = None
         self.filaDatos = listaHorizontal()                 #Como atributo poseera una lista doble enlazada
 
 class listaCabeceraHorizontal():                           #Creando lista para las cabeceras de las columnas
@@ -28,31 +28,31 @@ class listaCabeceraHorizontal():                           #Creando lista para l
             self.insertarMedio(nuevoNodo)
     
     def insertarInicio(self, nuevoNodo):
-        self.inicio.arriba = nuevoNodo
-        nuevoNodo.abajo = self.inicio
+        self.inicio.anterior = nuevoNodo
+        nuevoNodo.siguiente = self.inicio
         self.inicio = nuevoNodo
     
     def insertarFinal(self, nuevoNodo):
-        self.fin.abajo = nuevoNodo
-        nuevoNodo.arriba = self.fin
+        self.fin.siguiente = nuevoNodo
+        nuevoNodo.anterior = self.fin
         self.fin = nuevoNodo
     
     def insertarMedio(self, nuevoNodo):
         temporal1 = self.inicio
         while temporal1.fila < nuevoNodo.fila:
-            temporal1 = temporal1.abajo
-        temporal2 = temporal1.arriba
-        temporal2.abajo = nuevoNodo
-        nuevoNodo.arriba = temporal2
-        temporal1.arriba = nuevoNodo
-        nuevoNodo.abajo = temporal1
+            temporal1 = temporal1.siguiente
+        temporal2 = temporal1.anterior
+        temporal2.siguiente = nuevoNodo
+        nuevoNodo.anterior = temporal2
+        temporal1.anterior = nuevoNodo
+        nuevoNodo.siguiente = temporal1
     
     def mostrarListaCabeceraHorizontal(self):
         if self.verVacioListaCabeceraHorizontal() == False:
             temporal = self.inicio
             while temporal is not None:
                 print('Fila: ', temporal.fila)
-                temporal = temporal.abajo
+                temporal = temporal.siguiente
     
     def buscarCabeceraHorizontal(self, fila):               #Buscando una columna entre las cabeceras
         if self.verVacioListaCabeceraHorizontal() == False:
@@ -61,12 +61,11 @@ class listaCabeceraHorizontal():                           #Creando lista para l
                 if temporal.fila == fila:
                     return temporal
                 else:
-                    temporal = temporal.abajo
+                    temporal = temporal.siguiente
         return None
 
-
 '''
-lista1 = listaCabeceraHorizontal()
+lista1 = listaCabeceraVertical()
 
 lista1.insertar(3)
 lista1.insertar(1)
@@ -79,5 +78,5 @@ if lista1.buscarCabeceraHorizontal(4) == None:
     print('No existe')
 else:
     tmp = lista1.buscarCabeceraHorizontal(4)
-    print('Si existe la columna ', tmp.fila)
+    print('Si existe la fila ', tmp.fila)
 '''
