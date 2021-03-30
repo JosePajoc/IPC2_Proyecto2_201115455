@@ -2,7 +2,6 @@ from tkinter import filedialog                      #Módulo para abrir ventana 
 from io import open                                 #Módulo para abrir el archivo
 from tkinter import *                               #Módulo para entorno gráfico
 
-
 ventanaInicial = Tk()                               #Objeto de tipo ventana
 ventanaInicial.title('Proyecto 2 - IPC2')
 ventanaInicial.resizable(False, False)              #No permitir cambios al ancho y alto de la ventana
@@ -20,13 +19,19 @@ def buscarXML():
 #-------------------------------------------------------------------------------------------------------------------
 
 #Widgets
-cargarArchivobtn = Button(marcoInicial, text="Cargar archivo XML", command=buscarXML).place(x=50, y=20)
-operacionesbtn = Button(marcoInicial, text="Operaciones").place(x=200, y=20)
-reportesArchivobtn = Button(marcoInicial, text="Reportes" ).place(x=320, y=20)
-ayudaArchivobtn = Button(marcoInicial, text="Ayuda").place(x=410, y=20)
+cargarArchivobtn = Button(marcoInicial, text="Cargar archivo XML", command=buscarXML)
+cargarArchivobtn.place(x=50, y=20)
+operacionesbtn = Button(marcoInicial, text="Operaciones")
+operacionesbtn.place(x=200, y=20)
+reportesArchivobtn = Button(marcoInicial, text="Reportes" )
+reportesArchivobtn.place(x=320, y=20)
+ayudaArchivobtn = Button(marcoInicial, text="Ayuda")
+ayudaArchivobtn.place(x=410, y=20)
 
-rutaTextolbl = Label(marcoInicial, text="El archivo se encuentra en:").place(x=50, y=70)
-rutalbl = Label(marcoInicial, textvariable=rutaXML).place(x=50, y=90)
+rutaTextolbl = Label(marcoInicial, text="El archivo se encuentra en:")
+rutaTextolbl.place(x=50, y=70)
+rutalbl = Label(marcoInicial, textvariable=rutaXML)
+rutalbl.place(x=50, y=90)
 
 
 
