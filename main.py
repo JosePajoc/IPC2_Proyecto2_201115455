@@ -2,19 +2,21 @@ from tkinter import filedialog                      #Módulo para abrir ventana 
 from tkinter import messagebox                      #Módulo para cuadros de mensaje
 from io import open                                 #Módulo para abrir el archivo
 from tkinter import *                               #Módulo para entorno gráfico
+from matrizOrtogonal import matrizOrtogonal         #Módulo para crear matriz ortogonal
 
 import xml.etree.ElementTree as ET                  #importando libreria para manipular XML
 
+
 #---------------------------------------Manejo del XML-----------------------------------------------------------
-documentoXML = None                                   #Variable para el archivo XML
-matricesRaiz = None                                   #Variable para la etiqueta matrices y así poder iterar
+documentoXML = None                                             #Variable para el archivo XML
+matricesRaiz = None                                             #Variable para la etiqueta matrices y así poder iterar
 
 def cargarXML(ruta):
     global documentoXML
     global matricesRaiz
     try:
         documentoXML = ET.parse(ruta)                           #Conviritendo a legible
-        matricesRaiz = documentoXML.getroot()                   #Obteniendo la raíz
+        matricesRaiz = documentoXML.getroot()                   #Obteniendo la raíz del XML
         messagebox.showinfo("información", "Se cargo con éxtio...\n\nEl archivo se encuentra en:\n" + ruta)
         procesarXML()
     except:
@@ -23,23 +25,34 @@ def cargarXML(ruta):
 def procesarXML():
     global documentoXML
     global matricesRaiz
-    
-
+    for matriz in matricesRaiz:                         #Todas las etiquetas de cada matriz son asignadas al elemento
+        print('El nombre de la matriz es ', matriz[0].text)
+        filas = int(matriz[1].text)                             #Valor de la etiqueta filas del XML
+        columnas = int(matriz[2].text)                          #Valor de la etiqueta columnas del XML
+        
+        imagenEntrada =  matriz[3].text.replace(' ', '')        #Quitando espacios en blanco de la imagen
+        imagenSinSaltos = imagenEntrada.replace('\n','')        #Sustitución de saltos por &
+        print('Filas: ', matriz[1].text)                        #<------------------QUITAR
+        print('Columnas: ', matriz[2].text)                     #<------------------QUITAR
+        print('Imagen: ', imagenSinSaltos)                      #<------------------QUITAR
+        matrizOrto1 = matrizOrtogonal()                         #Instanciando matriz ortogonal
+        matrizOrto1.llenado(columnas, filas, imagenSinSaltos)   
+        matrizOrto1.mostrarMatriz(columnas, filas)               
 
 
 #----------------------------------------Ventana inicial-----------------------------------------------------------
-ventanaInicial = Tk()                               #Objeto de tipo ventana
+ventanaInicial = Tk()                                           #Objeto de tipo ventana
 ventanaInicial.title('Proyecto 2 - IPC2')
-ventanaInicial.resizable(False, False)              #No permitir cambios al ancho y alto de la ventana
+ventanaInicial.resizable(False, False)                          #No permitir cambios al ancho y alto de la ventana
 
-marcoInicial = Frame(ventanaInicial, width="900", height="650")
-marcoInicial.pack()                                 #Marco agregado a la ventana
+marcoInicial = Frame(ventanaInicial, width="800", height="550")
+marcoInicial.pack()                                             #Marco agregado a la ventana
 
 #-------------------------------------Método para bótones------------------------------------------------------------
 def buscarXML():
     #Cuadro de dialogo para buscar y luego asignarlo a la variable texto
     rutaXML = filedialog.askopenfilename(title = "Seleccionar archivo XML")
-    cargarXML(rutaXML)
+    cargarXML(rutaXML)                                          #Método para abrir el archivo XML
        
     
 #------------------------------------------#Widgets------------------------------------------------------------------
@@ -54,4 +67,4 @@ ayudaArchivobtn.place(x=410, y=20)
 
 
 
-ventanaInicial.mainloop()                           #Ejecutar hasta cerrar
+ventanaInicial.mainloop()                                       #Ejecutar hasta cerrar

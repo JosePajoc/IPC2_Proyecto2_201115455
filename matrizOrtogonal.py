@@ -21,12 +21,12 @@ class matrizOrtogonal():
         temporalFila.filaDatos.insertar(nodoNuevo)
         #print('Dato: ', nodoNuevo.dato, ' Columna: ', nodoNuevo.columna, ' Fila: ', nodoNuevo.fila)
     
-    def llenado(self, columnas, filas):
-        dato = 1
+    def llenado(self, columnas, filas, cadena):
+        indice = 0
         for col in range(columnas):
             for fil in range(filas):
-                self.insertar(dato, fil, col)
-                dato = dato + 1
+                self.insertar(cadena[indice], fil, col)
+                indice = indice + 1
     
     def mostrarMatriz(self, columnas, filas):
         salida = ''
@@ -39,8 +39,9 @@ class matrizOrtogonal():
             print(salida)
             salida = ''
 
-
+'''
 matriz1 = matrizOrtogonal()
-matriz1.llenado(3, 3)
+matriz1.llenado(3, 3, 'Esto es u')
 matriz1.mostrarMatriz(3,3)
 #print(matriz1.filas.buscarCabeceraHorizontal(1).filaDatos.inicio.derecha.derecha.arriba.dato)
+'''
