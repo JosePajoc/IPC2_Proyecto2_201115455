@@ -1,8 +1,7 @@
 from tkinter import filedialog                      #Módulo para abrir ventana de selección
 from tkinter import messagebox                      #Módulo para cuadros de mensaje
-from io import open                                 #Módulo para abrir el archivo
 from tkinter import *                               #Módulo para entorno gráfico
-from matrizOrtogonal import matrizOrtogonal         #Módulo para crear matriz ortogonal
+from nodoMatrix import listaMatrizOrtogonal         #Módulo para crear lista enlazada simplde de matrices ortogonales
 
 import xml.etree.ElementTree as ET                  #importando libreria para manipular XML
 
@@ -10,10 +9,12 @@ import xml.etree.ElementTree as ET                  #importando libreria para ma
 #---------------------------------------Manejo del XML-----------------------------------------------------------
 documentoXML = None                                             #Variable para el archivo XML
 matricesRaiz = None                                             #Variable para la etiqueta matrices y así poder iterar
+listaMatrix1 = listaMatrizOrtogonal()                 #Creación de lista simple enlazada para las matrices ortogonales
 
 def cargarXML(ruta):
     global documentoXML
     global matricesRaiz
+    global listaMatrix1
     try:
         documentoXML = ET.parse(ruta)                           #Conviritendo a legible
         matricesRaiz = documentoXML.getroot()                   #Obteniendo la raíz del XML
@@ -25,6 +26,7 @@ def cargarXML(ruta):
 def procesarXML():
     global documentoXML
     global matricesRaiz
+    indice = 0
     for matriz in matricesRaiz:                         #Todas las etiquetas de cada matriz son asignadas al elemento
         print('El nombre de la matriz es ', matriz[0].text)
         filas = int(matriz[1].text)                             #Valor de la etiqueta filas del XML
@@ -35,9 +37,16 @@ def procesarXML():
         print('Filas: ', matriz[1].text)                        #<------------------QUITAR
         print('Columnas: ', matriz[2].text)                     #<------------------QUITAR
         print('Imagen: ', imagenSinSaltos)                      #<------------------QUITAR
-        matrizOrto1 = matrizOrtogonal()                         #Instanciando matriz ortogonal
-        matrizOrto1.llenado(columnas, filas, imagenSinSaltos)   
-        matrizOrto1.mostrarMatriz(columnas, filas)               
+        #matrizOrto1 = matrizOrtogonal()                         #Instanciando matriz ortogonal
+        #matrizOrto1.llenado(columnas, filas, imagenSinSaltos)   
+        #matrizOrto1.mostrarMatriz(columnas, filas)    
+
+        listaMatrix1.insertarFinal(indice, matriz[0].text)      #Se crea el nodo con posición y nombre
+        #Se busca el nodo creado, se llama al atributo tipo matriz ortogonal, se llena la matriz con la info de la imagen del XML
+        listaMatrix1.buscarPosicionMatriz(indice).matrizOrtogonal.llenado(columnas, filas, imagenSinSaltos)
+        listaMatrix1.buscarPosicionMatriz(indice).matrizOrtogonal.mostrarMatriz(columnas, filas)
+        indice = indice + 1 
+        print('----------------------------------------------------------------------------------------------')          
 
 
 #----------------------------------------Ventana inicial-----------------------------------------------------------
