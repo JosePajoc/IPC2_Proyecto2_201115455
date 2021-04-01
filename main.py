@@ -106,7 +106,8 @@ def rotacionHorizontalMatriz():
 
     colNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).columnas
     filNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).filas
-    listaMatrix1.insertarFinal(indice, 'Matriz_Rotacion_Horizontal', colNuevaOrtogonal, filNuevaOrtogonal) #Se crea el nodo con posición y NOMBRE
+    #Se crea el nodo con posición y NOMBRE
+    listaMatrix1.insertarFinal(indice, 'Matriz_Rotacion_Horizontal', colNuevaOrtogonal, filNuevaOrtogonal) 
     cadenaMatrizOrtogonal0 = listaMatrix1.buscarPosicionMatriz(0).matrizOrtogonal.devolvercadena(colNuevaOrtogonal, filNuevaOrtogonal)
     #print(cadenaMatrizOrtogonal0)
     listaMatrix1.buscarNombreMatriz('Matriz_Rotacion_Horizontal').matrizOrtogonal.llenadoRotacionHorizontal(colNuevaOrtogonal, filNuevaOrtogonal, cadenaMatrizOrtogonal0)
@@ -132,7 +133,8 @@ def rotacionVerticalMatriz():
 
     colNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).columnas
     filNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).filas
-    listaMatrix1.insertarFinal(indice, 'Matriz_Rotacion_Vertical', colNuevaOrtogonal, filNuevaOrtogonal) #Se crea el nodo con posición y NOMBRE
+    #Se crea el nodo con posición y NOMBRE
+    listaMatrix1.insertarFinal(indice, 'Matriz_Rotacion_Vertical', colNuevaOrtogonal, filNuevaOrtogonal) 
     cadenaMatrizOrtogonal0 = listaMatrix1.buscarPosicionMatriz(0).matrizOrtogonal.devolvercadena(colNuevaOrtogonal, filNuevaOrtogonal)
     #print(cadenaMatrizOrtogonal0)
     listaMatrix1.buscarNombreMatriz('Matriz_Rotacion_Vertical').matrizOrtogonal.llenadoRotacionVertical(colNuevaOrtogonal, filNuevaOrtogonal, cadenaMatrizOrtogonal0)
@@ -150,6 +152,35 @@ def rotacionVerticalMatriz():
     indice = indice + 1                                 #Indice de la lista simple enlazada para las matrices ortogonales
 
 
+#-------------------------------Proceso transpuesta de una matriz---------------------------------------------
+def transpuestaMatriz():
+    global listaMatrix1
+    global indice
+    global marcoOperaciones
+
+    colNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).columnas
+    filNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).filas
+    #Se crea el nodo con posición, NOMBRE y cambio de COLUMNAS por FILAS
+    listaMatrix1.insertarFinal(indice, 'Matriz_Transpuesta', filNuevaOrtogonal, colNuevaOrtogonal) 
+    cadenaMatrizOrtogonal0 = listaMatrix1.buscarPosicionMatriz(0).matrizOrtogonal.devolvercadena(colNuevaOrtogonal, filNuevaOrtogonal)
+    
+    listaMatrix1.buscarNombreMatriz('Matriz_Transpuesta').matrizOrtogonal.transpuesta(colNuevaOrtogonal, filNuevaOrtogonal, cadenaMatrizOrtogonal0)
+    #Se cambia COLUMNAS por FILAS
+    listaMatrix1.buscarNombreMatriz('Matriz_Transpuesta').matrizOrtogonal.crearGrafo('Matriz_Transpuesta', filNuevaOrtogonal, colNuevaOrtogonal)
+    
+    noImagen3 = Image.open('grafos/Matriz_Transpuesta.dot.png')
+    tamanoImagen3 = noImagen3.resize((250, 250))
+    renderizadoImagen3 = ImageTk.PhotoImage(tamanoImagen3)
+    imagen3lbl = Label(marcoInicial, image=renderizadoImagen3)
+    imagen3lbl.image = renderizadoImagen3
+    imagen3lbl.place(x=570, y=90)
+    
+    transpuesta = Button(marcoOperaciones, text='Transpuesta', state=DISABLED)   #Deshabilitar botón secundario
+    transpuesta.place(x=310, y=10)
+
+    indice = indice + 1                                 #Indice de la lista simple enlazada para las matrices ortogonales
+
+
 #---------------------------------Mostrar operaciones que se pueden realizar----------------------------------------
 
 def mostrarOperaciones():
@@ -162,7 +193,7 @@ def mostrarOperaciones():
         rotacionHorizontal.place(x=10, y=10)
         rotacionVertical = Button(marcoOperaciones, text='Rotación vertical', command=rotacionVerticalMatriz)
         rotacionVertical.place(x=160, y=10)
-        transpuesta = Button(marcoOperaciones, text='Transpuesta')
+        transpuesta = Button(marcoOperaciones, text='Transpuesta', command=transpuestaMatriz)
         transpuesta.place(x=310, y=10)
         limpiarZona = Button(marcoOperaciones, text='Limpiar zona')
         limpiarZona.place(x=420, y=10)

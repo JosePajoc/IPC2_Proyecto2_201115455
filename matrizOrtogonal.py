@@ -62,6 +62,13 @@ class matrizOrtogonal():
                 indice = indice + 1
                 col = col - 1
 
+    def transpuesta(self, columnas, filas, cadena):
+        indice = 0
+        for fil in range(filas):
+            for col in range(columnas):
+                self.insertar(cadena[indice], fil, col)                 #dato, columna, fila
+                indice = indice + 1
+
     def devolvercadena(self, columnas, filas):             #Retornar los datos de la matriz ortogonal en una sola línea
         salida = ''
         for i in range(filas):
@@ -98,43 +105,15 @@ class matrizOrtogonal():
         salidaImagen.close()
         render('dot', 'png', nombreGrafo)                 #Renderizar el archivo DOT escrito
 
+
+
 '''
 matriz1 = matrizOrtogonal()
 matriz1.llenado(5, 8, '------***--*-*--***-------*-*---*---*-*-')
 matriz1.mostrarMatriz(5, 8)
 #print(matriz1.filas.buscarCabeceraHorizontal(1).filaDatos.inicio.derecha.derecha.arriba.dato)
 matriz1.crearGrafo('matriz de prueba', 5, 8)
-print('')
-print('')
-matriz1_1 = matrizOrtogonal()
-matriz1_1.llenadoRotacionVertical(5, 8, '------***--*-*--***-------*-*---*---*-*-')
-matriz1_1.mostrarMatriz(5, 8)
-matriz1_1.crearGrafo('matriz de prueba 1_1 rotacion horizontal', 5, 8)
 
-matriz1_1 = matrizOrtogonal()
-matriz1_1.llenadoRotacionHorizontal(5, 8, '------***--*-*--***-------*-*---*---*-*-')
-matriz1_1.mostrarMatriz(5, 8)
-matriz1_1.crearGrafo('matriz de prueba 1_1 rotacion horizontal', 5, 8)
-
-matriz2 = matrizOrtogonal()
-matriz2.llenado(12, 12, '-----------------**---------*--*-------*----*-----*--**--*---*--****--*--------------*-******-*--*--------*--*--------*--**********-------------')
-matriz2.mostrarMatriz(12, 12)
-matriz2.crearGrafo('matriz de prueba 2', 12, 12)
-print('')
-
-matriz3 = matrizOrtogonal()
-matriz3.llenadoRotacionHorizontal(12, 12, '-----------------**---------*--*-------*----*-----*--**--*---*--****--*--------------*-******-*--*--------*--*--------*--**********-------------')
-matriz3.mostrarMatriz(12, 12)
-#matriz3.crearGrafo('matriz de prueba 2 rotacion horizontal', 12, 12)
-print(matriz3.devolvercadena(12, 12))
-
-matriz1 = matrizOrtogonal()
-matriz1.llenado(10, 10, '-----------***-***----*--***----*--*-----***-*---------------***-***---*-----*---***-***------------')
-matriz1.mostrarMatriz(10, 10)
-#print(matriz1.filas.buscarCabeceraHorizontal(1).filaDatos.inicio.derecha.derecha.arriba.dato)
-matriz1.crearGrafo('matriz de prueba', 10, 10)
-print('')
-print('')
 matriz1_1 = matrizOrtogonal()
 matriz1_1.llenadoRotacionVertical(10, 10, '-----------***-***----*--***----*--*-----***-*---------------***-***---*-----*---***-***------------')
 matriz1_1.mostrarMatriz(10, 10)
