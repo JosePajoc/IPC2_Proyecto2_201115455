@@ -97,6 +97,7 @@ def mostrarImagenes(indice, nombreM1, nombreM2):
         imagen2lbl.image = renderizadoImagen2
         imagen2lbl.place(x=300, y=70)
 
+#-------------------------------Proceso rotación horizontal de una matriz---------------------------------------------
 def rotacionHorizontalMatriz():
     global listaMatrix1
     global indice
