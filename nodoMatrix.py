@@ -1,13 +1,15 @@
 from matrizOrtogonal import matrizOrtogonal
 
 class nodoMatriz():
-    def __init__(self, posicion, nombre):
+    def __init__(self, posicion, nombre, columnas, filas):          #Datos de la matriz ortogonal
         self.posicion = posicion
         self.nombre = nombre
+        self.columnas = columnas
+        self.filas = filas
         self.siguiente = None
         self.matrizOrtogonal = matrizOrtogonal()
     
-class listaMatrizOrtogonal():
+class listaMatrizOrtogonal():                                       #Lista simple enlazada
     def __init__(self):
         self.inicio = None
         self.fin = None
@@ -15,8 +17,8 @@ class listaMatrizOrtogonal():
     def verVacioListaMatrizOrtogonal(self):
         return self.inicio == None
     
-    def insertarFinal(self, posicion, nombre):
-        nuevoNodo = nodoMatriz(posicion, nombre)
+    def insertarFinal(self, posicion, nombre, columnas, filas):     #Agregar nodo al final
+        nuevoNodo = nodoMatriz(posicion, nombre, columnas, filas)
         if self.verVacioListaMatrizOrtogonal():
             self.inicio = nuevoNodo
             self.fin = nuevoNodo
@@ -30,10 +32,10 @@ class listaMatrizOrtogonal():
         if self.verVacioListaMatrizOrtogonal() == False:
             temporal = self.inicio
             while temporal is not None:
-                print('Posición: ', temporal.posicion, ' nombre: ', temporal.nombre)
+                print('Posición: ', temporal.posicion, ' nombre: ', temporal.nombre, ' columnas: ', temporal.columnas,' filas:', temporal.filas)
                 temporal = temporal.siguiente
 
-    def buscarNombreMatriz(self, nombre):
+    def buscarNombreMatriz(self, nombre):                           #Busqueda de nodo por nombre
         if self.verVacioListaMatrizOrtogonal() == False:
             temporal = self.inicio
             while temporal is not None:
@@ -43,7 +45,7 @@ class listaMatrizOrtogonal():
                     temporal = temporal.siguiente
             return None
     
-    def buscarPosicionMatriz(self, posicion):
+    def buscarPosicionMatriz(self, posicion):                       #Bsqueda de nodo por posición
         if self.verVacioListaMatrizOrtogonal() == False:
             temporal = self.inicio
             while temporal is not None:
@@ -55,10 +57,10 @@ class listaMatrizOrtogonal():
 
 '''
 listaMatrix1 = listaMatrizOrtogonal()
-listaMatrix1.insertarFinal(0, 'mo0')
-listaMatrix1.insertarFinal(1, 'mo1')
-listaMatrix1.insertarFinal(2, 'mo2')
-listaMatrix1.insertarFinal(3, 'mo3')
+listaMatrix1.insertarFinal(0, 'mo0', 10, 10)
+listaMatrix1.insertarFinal(1, 'mo1', 8, 5)
+listaMatrix1.insertarFinal(2, 'mo2', 11,20)
+listaMatrix1.insertarFinal(3, 'mo3', 3, 3)
 listaMatrix1.mostrarListaMatrizOrtogonal()
 
 if listaMatrix1.buscarNombreMatriz('mo2') is not None:

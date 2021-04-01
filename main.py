@@ -12,7 +12,7 @@ ventanaInicial = Tk()                                           #Objeto de tipo 
 ventanaInicial.title('Proyecto 2 - IPC2')
 ventanaInicial.resizable(False, False)                          #No permitir cambios al ancho y alto de la ventana
 
-marcoInicial = Frame(ventanaInicial, width="800", height="550")
+marcoInicial = Frame(ventanaInicial, width="830", height="500")
 marcoInicial.pack()                                             #Marco agregado a la ventana
 
 
@@ -20,7 +20,8 @@ marcoInicial.pack()                                             #Marco agregado 
 documentoXML = None                                             #Variable para el archivo XML
 matricesRaiz = None                                             #Variable para la etiqueta matrices y así poder iterar
 listaMatrix1 = listaMatrizOrtogonal()                 #Creación de lista simple enlazada para las matrices ortogonales
-
+indice = 0                                            #Indice global para saber cuantas matrices ortogonales existen
+marcoOperaciones = None
 
 def cargarXML(ruta):
     global documentoXML
@@ -38,10 +39,11 @@ def cargarXML(ruta):
 def procesarXML():
     global documentoXML
     global matricesRaiz
+    global indice
+    global listaMatrix1
     nombreM1 = ''
     nombreM2 = ''
-    
-    indice = 0
+
     for matriz in matricesRaiz:                         #Todas las etiquetas de cada matriz son asignadas al elemento
         filas = int(matriz[1].text)                             #Valor de la etiqueta filas del XML
         columnas = int(matriz[2].text)                          #Valor de la etiqueta columnas del XML
@@ -52,10 +54,8 @@ def procesarXML():
             imagenEntrada = imagenEntrada.replace('			','')
             imagenEntrada = imagenEntrada.replace('\n','')
             imagenEntrada = imagenEntrada.replace('    ','')
-        
-        #print(imagenEntrada)
-        
-        listaMatrix1.insertarFinal(indice, matriz[0].text)      #Se crea el nodo con posición y NOMBRE
+  
+        listaMatrix1.insertarFinal(indice, matriz[0].text, columnas, filas)      #Se crea el nodo con posición y NOMBRE
         if indice == 0:
             nombreM1 = matriz[0].text
         elif indice == 1:
@@ -68,9 +68,9 @@ def procesarXML():
         listaMatrix1.buscarPosicionMatriz(indice).matrizOrtogonal.crearGrafo(matriz[0].text, columnas, filas)
         
         indice = indice + 1 
-
+    cargarArchivobtn = Button(marcoInicial, text="Cargar archivo XML", state=DISABLED)  #Deshabilitar botón principal
+    cargarArchivobtn.place(x=50, y=20)
     mostrarImagenes(indice, nombreM1, nombreM2)
-    mostrarOperaciones()
         
 
 #-----------------------------------------Mostrar imagenes en los visores------------------------------------------    
@@ -97,11 +97,61 @@ def mostrarImagenes(indice, nombreM1, nombreM2):
         imagen2lbl.image = renderizadoImagen2
         imagen2lbl.place(x=300, y=70)
 
+def rotacionHorizontalMatriz():
+    global listaMatrix1
+    global indice
+    global marcoOperaciones
+
+    colNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).columnas
+    filNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).filas
+    listaMatrix1.insertarFinal(indice, 'Matriz_Rotacion_Horizontal', colNuevaOrtogonal, filNuevaOrtogonal) #Se crea el nodo con posición y NOMBRE
+    cadenaMatrizOrtogonal0 = listaMatrix1.buscarPosicionMatriz(0).matrizOrtogonal.devolvercadena(colNuevaOrtogonal, filNuevaOrtogonal)
+    #print(cadenaMatrizOrtogonal0)
+    listaMatrix1.buscarNombreMatriz('Matriz_Rotacion_Horizontal').matrizOrtogonal.llenadoRotacionHorizontal(colNuevaOrtogonal, filNuevaOrtogonal, cadenaMatrizOrtogonal0)
+    listaMatrix1.buscarNombreMatriz('Matriz_Rotacion_Horizontal').matrizOrtogonal.crearGrafo('Matriz_Rotacion_Horizontal', colNuevaOrtogonal, filNuevaOrtogonal)
+    noImagen3 = Image.open('grafos/Matriz_Rotacion_Horizontal.dot.png')
+    tamanoImagen3 = noImagen3.resize((250, 250))
+    renderizadoImagen3 = ImageTk.PhotoImage(tamanoImagen3)
+    imagen3lbl = Label(marcoInicial, image=renderizadoImagen3)
+    imagen3lbl.image = renderizadoImagen3
+    imagen3lbl.place(x=550, y=70)
+    
+    rotacionHorizontal = Button(marcoOperaciones, text='Rotación horizontal', state=DISABLED)   #Deshabilitar botón secundario
+    rotacionHorizontal.place(x=10, y=10)
+
+    indice = indice + 1
+
 
 #---------------------------------Mostrar operaciones que se pueden realizar----------------------------------------
+
 def mostrarOperaciones():
-    marcoOperaciones = LabelFrame(marcoInicial, text="La operaciones que puede realizar son:", height=100, width=500)
-    marcoOperaciones.place(x=40, y= 350)
+    global marcoOperaciones
+
+    if indice == 1:
+        marcoOperaciones = LabelFrame(marcoInicial, text="La operaciones para una matriz son:", height=120, width=600)
+        marcoOperaciones.place(x=40, y= 350)
+        rotacionHorizontal = Button(marcoOperaciones, text='Rotación horizontal', command=rotacionHorizontalMatriz)
+        rotacionHorizontal.place(x=10, y=10)
+        rotacionVertical = Button(marcoOperaciones, text='Rotación vertical')
+        rotacionVertical.place(x=160, y=10)
+        transpuesta = Button(marcoOperaciones, text='Transpuesta')
+        transpuesta.place(x=310, y=10)
+        limpiarZona = Button(marcoOperaciones, text='Limpiar zona')
+        limpiarZona.place(x=420, y=10)
+        agregarLineaHorizontal = Button(marcoOperaciones, text='Agregar línea horizontal')
+        agregarLineaHorizontal.place(x=10, y=60)
+        agregarLineaVertical = Button(marcoOperaciones, text='Agregar línea vertical')
+        agregarLineaVertical.place(x=160, y=60)
+        agregarRectangulo = Button(marcoOperaciones, text='Agregar ractángulo')
+        agregarRectangulo.place(x=290, y=60)
+        agregarTrianguloRectangulo = Button(marcoOperaciones, text='Agregar triángulo rectángulo')
+        agregarTrianguloRectangulo.place(x=410, y=60)
+    else:
+        marcoOperaciones = LabelFrame(marcoInicial, text="La operaciones para dos matriz son:", height=120, width=600)
+        marcoOperaciones.place(x=40, y= 350)
+    
+    operacionesbtn = Button(marcoInicial, text="Operaciones", state=DISABLED)       #Deshabilitar botón principal
+    operacionesbtn.place(x=200, y=20)
 
 
 #-------------------------------------Abrir cuadro de dialogo para buscar--------------------------------------------
@@ -114,7 +164,7 @@ def buscarXML():
 #------------------------------------------#Widgets------------------------------------------------------------------
 cargarArchivobtn = Button(marcoInicial, text="Cargar archivo XML", command=buscarXML)
 cargarArchivobtn.place(x=50, y=20)
-operacionesbtn = Button(marcoInicial, text="Operaciones")
+operacionesbtn = Button(marcoInicial, text="Operaciones", command=mostrarOperaciones)
 operacionesbtn.place(x=200, y=20)
 reportesArchivobtn = Button(marcoInicial, text="Reportes" )
 reportesArchivobtn.place(x=320, y=20)
@@ -141,7 +191,6 @@ renderizadoImagen3 = ImageTk.PhotoImage(tamanoImagen3)
 imagen3lbl = Label(marcoInicial, image=renderizadoImagen3)
 imagen3lbl.image = renderizadoImagen3
 imagen3lbl.place(x=550, y=70)
-
 
 
 ventanaInicial.mainloop()                                       #Ejecutar hasta cerrar

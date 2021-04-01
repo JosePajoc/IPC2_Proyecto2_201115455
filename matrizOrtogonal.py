@@ -27,10 +27,10 @@ class matrizOrtogonal():
         indice = 0
         for fil in range(filas):
             for col in range(columnas):
-                self.insertar(cadena[indice], col, fil)
+                self.insertar(cadena[indice], col, fil)                 #dato, columna, fila
                 indice = indice + 1
     
-    def mostrarMatriz(self, columnas, filas):
+    def mostrarMatriz(self, columnas, filas):                           #Mostrar en consola
         salida = ''
         for i in range(filas):
             temporal = self.filas.buscarCabeceraHorizontal(i).filaDatos
@@ -41,6 +41,25 @@ class matrizOrtogonal():
             print(salida)
             salida = ''
 
+    def llenadoRotacionHorizontal(self, columnas, filas, cadena):
+        indice = 0
+        filas = filas - 1
+        while filas > -1:
+            for col in range(columnas):
+                self.insertar(cadena[indice], col, filas)
+                #print('columna: ', col, ' fila: ', filas)              #Visualizar coordenadas en consola
+                indice = indice + 1
+            filas = filas - 1
+
+    def devolvercadena(self, columnas, filas):             #Retornar los datos de la matriz ortogonal en una sola línea
+        salida = ''
+        for i in range(filas):
+            temporal = self.filas.buscarCabeceraHorizontal(i).filaDatos
+            temporal2 = temporal.inicio
+            for j in range(columnas):
+                salida = salida + str(temporal2.dato)
+                temporal2 = temporal2.derecha
+        return salida
     
     def crearGrafo(self, nombre, columnas, filas):
         nombreGrafo = 'grafos/' + nombre + '.dot'
@@ -76,8 +95,20 @@ matriz1.mostrarMatriz(5, 8)
 matriz1.crearGrafo('matriz de prueba', 5, 8)
 print('')
 print('')
+matriz1_1 = matrizOrtogonal()
+matriz1_1.llenadoRotacionHorizontal(5, 8, '------***--*-*--***-------*-*---*---*-*-')
+matriz1_1.mostrarMatriz(5, 8)
+matriz1_1.crearGrafo('matriz de prueba 1_1 rotacion horizontal', 5, 8)
+
 matriz2 = matrizOrtogonal()
 matriz2.llenado(12, 12, '-----------------**---------*--*-------*----*-----*--**--*---*--****--*--------------*-******-*--*--------*--*--------*--**********-------------')
 matriz2.mostrarMatriz(12, 12)
 matriz2.crearGrafo('matriz de prueba 2', 12, 12)
+print('')
+
+matriz3 = matrizOrtogonal()
+matriz3.llenadoRotacionHorizontal(12, 12, '-----------------**---------*--*-------*----*-----*--**--*---*--****--*--------------*-******-*--*--------*--*--------*--**********-------------')
+matriz3.mostrarMatriz(12, 12)
+#matriz3.crearGrafo('matriz de prueba 2 rotacion horizontal', 12, 12)
+print(matriz3.devolvercadena(12, 12))
 '''
