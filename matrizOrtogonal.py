@@ -25,9 +25,9 @@ class matrizOrtogonal():
     
     def llenado(self, columnas, filas, cadena):
         indice = 0
-        for col in range(columnas):
-            for fil in range(filas):
-                self.insertar(cadena[indice], fil, col)
+        for fil in range(filas):
+            for col in range(columnas):
+                self.insertar(cadena[indice], col, fil)
                 indice = indice + 1
     
     def mostrarMatriz(self, columnas, filas):
@@ -40,13 +40,15 @@ class matrizOrtogonal():
                 temporal2 = temporal2.derecha
             print(salida)
             salida = ''
+
     
-    def crearGrafo(self, nombre, filas, columnas):
+    def crearGrafo(self, nombre, columnas, filas):
         nombreGrafo = 'grafos/' + nombre + '.dot'
         salidaImagen = open(nombreGrafo, 'w')
         salidaImagen.write('digraph G { \n')
         salidaImagen.write('node [shape=plaintext] \n')
         salidaImagen.write('a [label=<<table border="0" cellborder="1" cellspacing="0"> \n')
+        
         for i in range(filas):
             temporal = self.filas.buscarCabeceraHorizontal(i).filaDatos
             temporal2 = temporal.inicio
@@ -60,7 +62,7 @@ class matrizOrtogonal():
                 temporal2 = temporal2.derecha
             
             salidaImagen.write('</tr> \n')
-
+        
         salidaImagen.write('</table>>]; \n')
         salidaImagen.write('}')
         salidaImagen.close()
@@ -68,8 +70,14 @@ class matrizOrtogonal():
 
 '''
 matriz1 = matrizOrtogonal()
-matriz1.llenado(3, 3, 'Esto es u')
-matriz1.mostrarMatriz(3,3)
+matriz1.llenado(5, 8, '------***--*-*--***-------*-*---*---*-*-')
+matriz1.mostrarMatriz(5, 8)
 #print(matriz1.filas.buscarCabeceraHorizontal(1).filaDatos.inicio.derecha.derecha.arriba.dato)
-matriz1.crearGrafo('matriz de prueba', 3, 3)
+matriz1.crearGrafo('matriz de prueba', 5, 8)
+print('')
+print('')
+matriz2 = matrizOrtogonal()
+matriz2.llenado(12, 12, '-----------------**---------*--*-------*----*-----*--**--*---*--****--*--------------*-******-*--*--------*--*--------*--**********-------------')
+matriz2.mostrarMatriz(12, 12)
+matriz2.crearGrafo('matriz de prueba 2', 12, 12)
 '''
