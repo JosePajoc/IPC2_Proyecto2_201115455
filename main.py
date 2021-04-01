@@ -12,7 +12,7 @@ ventanaInicial = Tk()                                           #Objeto de tipo 
 ventanaInicial.title('Proyecto 2 - IPC2')
 ventanaInicial.resizable(False, False)                          #No permitir cambios al ancho y alto de la ventana
 
-marcoInicial = Frame(ventanaInicial, width="830", height="500")
+marcoInicial = Frame(ventanaInicial, width="850", height="500")
 marcoInicial.pack()                                             #Marco agregado a la ventana
 
 
@@ -54,7 +54,8 @@ def procesarXML():
             imagenEntrada = imagenEntrada.replace('			','')
             imagenEntrada = imagenEntrada.replace('\n','')
             imagenEntrada = imagenEntrada.replace('    ','')
-  
+
+
         listaMatrix1.insertarFinal(indice, matriz[0].text, columnas, filas)      #Se crea el nodo con posición y NOMBRE
         if indice == 0:
             nombreM1 = matriz[0].text
@@ -67,7 +68,7 @@ def procesarXML():
         #Crear imagenes a partir de la matriz ortogonal
         listaMatrix1.buscarPosicionMatriz(indice).matrizOrtogonal.crearGrafo(matriz[0].text, columnas, filas)
         
-        indice = indice + 1 
+        indice = indice + 1                             #Indice de la lista simple enlazada para las matrices ortogonales 
     cargarArchivobtn = Button(marcoInicial, text="Cargar archivo XML", state=DISABLED)  #Deshabilitar botón principal
     cargarArchivobtn.place(x=50, y=20)
     mostrarImagenes(indice, nombreM1, nombreM2)
@@ -81,21 +82,21 @@ def mostrarImagenes(indice, nombreM1, nombreM2):
         renderizadoImagen1 = ImageTk.PhotoImage(tamanoImagen1)
         imagenlbl = Label(marcoInicial, image=renderizadoImagen1)
         imagenlbl.image = renderizadoImagen1
-        imagenlbl.place(x=40, y=70)
+        imagenlbl.place(x=40, y=90)
     else:
         imagen1 = Image.open('grafos/' + nombreM1 + '.dot.png')
         tamanoImagen1 = imagen1.resize((250, 250))
         renderizadoImagen1 = ImageTk.PhotoImage(tamanoImagen1)
         imagenlbl = Label(marcoInicial, image=renderizadoImagen1)
         imagenlbl.image = renderizadoImagen1
-        imagenlbl.place(x=40, y=70)
+        imagenlbl.place(x=40, y=90)
 
         imagen2 = Image.open('grafos/' + nombreM2 + '.dot.png')
         tamanoImagen2 = imagen2.resize((250, 250))
         renderizadoImagen2 = ImageTk.PhotoImage(tamanoImagen2)
         imagen2lbl = Label(marcoInicial, image=renderizadoImagen2)
         imagen2lbl.image = renderizadoImagen2
-        imagen2lbl.place(x=300, y=70)
+        imagen2lbl.place(x=300, y=90)
 
 #-------------------------------Proceso rotación horizontal de una matriz---------------------------------------------
 def rotacionHorizontalMatriz():
@@ -115,12 +116,38 @@ def rotacionHorizontalMatriz():
     renderizadoImagen3 = ImageTk.PhotoImage(tamanoImagen3)
     imagen3lbl = Label(marcoInicial, image=renderizadoImagen3)
     imagen3lbl.image = renderizadoImagen3
-    imagen3lbl.place(x=550, y=70)
+    imagen3lbl.place(x=570, y=90)
     
     rotacionHorizontal = Button(marcoOperaciones, text='Rotación horizontal', state=DISABLED)   #Deshabilitar botón secundario
     rotacionHorizontal.place(x=10, y=10)
 
-    indice = indice + 1
+    indice = indice + 1                                 #Indice de la lista simple enlazada para las matrices ortogonales
+
+
+#-------------------------------Proceso rotación vertical de una matriz---------------------------------------------
+def rotacionVerticalMatriz():
+    global listaMatrix1
+    global indice
+    global marcoOperaciones
+
+    colNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).columnas
+    filNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).filas
+    listaMatrix1.insertarFinal(indice, 'Matriz_Rotacion_Vertical', colNuevaOrtogonal, filNuevaOrtogonal) #Se crea el nodo con posición y NOMBRE
+    cadenaMatrizOrtogonal0 = listaMatrix1.buscarPosicionMatriz(0).matrizOrtogonal.devolvercadena(colNuevaOrtogonal, filNuevaOrtogonal)
+    #print(cadenaMatrizOrtogonal0)
+    listaMatrix1.buscarNombreMatriz('Matriz_Rotacion_Vertical').matrizOrtogonal.llenadoRotacionVertical(colNuevaOrtogonal, filNuevaOrtogonal, cadenaMatrizOrtogonal0)
+    listaMatrix1.buscarNombreMatriz('Matriz_Rotacion_Vertical').matrizOrtogonal.crearGrafo('Matriz_Rotacion_Vertical', colNuevaOrtogonal, filNuevaOrtogonal)
+    noImagen3 = Image.open('grafos/Matriz_Rotacion_Vertical.dot.png')
+    tamanoImagen3 = noImagen3.resize((250, 250))
+    renderizadoImagen3 = ImageTk.PhotoImage(tamanoImagen3)
+    imagen3lbl = Label(marcoInicial, image=renderizadoImagen3)
+    imagen3lbl.image = renderizadoImagen3
+    imagen3lbl.place(x=570, y=90)
+    
+    rotacionVertical = Button(marcoOperaciones, text='Rotación vertical', state=DISABLED)   #Deshabilitar botón secundario
+    rotacionVertical.place(x=160, y=10)
+
+    indice = indice + 1                                 #Indice de la lista simple enlazada para las matrices ortogonales
 
 
 #---------------------------------Mostrar operaciones que se pueden realizar----------------------------------------
@@ -133,7 +160,7 @@ def mostrarOperaciones():
         marcoOperaciones.place(x=40, y= 350)
         rotacionHorizontal = Button(marcoOperaciones, text='Rotación horizontal', command=rotacionHorizontalMatriz)
         rotacionHorizontal.place(x=10, y=10)
-        rotacionVertical = Button(marcoOperaciones, text='Rotación vertical')
+        rotacionVertical = Button(marcoOperaciones, text='Rotación vertical', command=rotacionVerticalMatriz)
         rotacionVertical.place(x=160, y=10)
         transpuesta = Button(marcoOperaciones, text='Transpuesta')
         transpuesta.place(x=310, y=10)
@@ -172,26 +199,32 @@ reportesArchivobtn.place(x=320, y=20)
 ayudaArchivobtn = Button(marcoInicial, text="Ayuda")
 ayudaArchivobtn.place(x=410, y=20)
 
+visor1lbl = Label(marcoInicial, text='Visor 1')
+visor1lbl.place(x=40, y=60)
 noImagen1 = Image.open('grafos/no-image.png')
 tamanoImagen1 = noImagen1.resize((250, 250))
 renderizadoImagen1 = ImageTk.PhotoImage(tamanoImagen1)
 imagenlbl = Label(marcoInicial, image=renderizadoImagen1)
 imagenlbl.image = renderizadoImagen1
-imagenlbl.place(x=40, y=70)
+imagenlbl.place(x=40, y=90)
 
+visor2lbl = Label(marcoInicial, text='Visor 2')
+visor2lbl.place(x=300, y=60)
 noImagen2 = Image.open('grafos/no-image.png')
 tamanoImagen2 = noImagen2.resize((250, 250))
 renderizadoImagen2 = ImageTk.PhotoImage(tamanoImagen2)
 imagen2lbl = Label(marcoInicial, image=renderizadoImagen2)
 imagen2lbl.image = renderizadoImagen2
-imagen2lbl.place(x=300, y=70)
+imagen2lbl.place(x=300, y=90)
 
+visor3lbl = Label(marcoInicial, text='Resultado')
+visor3lbl.place(x=570, y=60)
 noImagen3 = Image.open('grafos/no-image.png')
 tamanoImagen3 = noImagen3.resize((250, 250))
 renderizadoImagen3 = ImageTk.PhotoImage(tamanoImagen3)
 imagen3lbl = Label(marcoInicial, image=renderizadoImagen3)
 imagen3lbl.image = renderizadoImagen3
-imagen3lbl.place(x=550, y=70)
+imagen3lbl.place(x=570, y=90)
 
 
 ventanaInicial.mainloop()                                       #Ejecutar hasta cerrar
