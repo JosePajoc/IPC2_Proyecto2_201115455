@@ -20,8 +20,8 @@ marcoInicial.pack()                                             #Marco agregado 
 #--------------------------------------------Manejo del XML------------------------------------------------------------
 documentoXML = None                                             #Variable para el archivo XML
 matricesRaiz = None                                             #Variable para la etiqueta matrices y así poder iterar
-listaMatrix1 = listaMatrizOrtogonal()                 #Creación de lista simple enlazada para las matrices ortogonales
-indice = 0                                            #Indice global para saber cuantas matrices ortogonales existen
+listaMatrix1 = listaMatrizOrtogonal()                           #Creación de lista simple enlazada para las matrices ortogonales
+indice = 0                                                      #Indice global para saber cuantas matrices ortogonales existen
 marcoOperaciones = None
 
 def cargarXML(ruta):
@@ -29,8 +29,8 @@ def cargarXML(ruta):
     global matricesRaiz
     global listaMatrix1
     #try:
-    documentoXML = ET.parse(ruta)                           #Conviritendo a legible
-    matricesRaiz = documentoXML.getroot()                   #Obteniendo la raíz del XML
+    documentoXML = ET.parse(ruta)                               #Conviritendo a legible
+    matricesRaiz = documentoXML.getroot()                       #Obteniendo la raíz del XML
     messagebox.showinfo("información", "Se cargo con éxtio...\n\nEl archivo se encuentra en:\n" + ruta)
     procesarXML()
     #except:
@@ -44,7 +44,7 @@ def procesarXML():
     nombreM1 = ''
     nombreM2 = ''
 
-    for matriz in matricesRaiz:                         #Todas las etiquetas de cada matriz son asignadas al elemento
+    for matriz in matricesRaiz:                                 #Todas las etiquetas de cada matriz son asignadas al elemento
         filas = int(matriz[1].text)                             #Valor de la etiqueta filas del XML
         columnas = int(matriz[2].text)                          #Valor de la etiqueta columnas del XML
         
@@ -216,6 +216,74 @@ def limpiarZonaImagen():
     indice = indice + 1                                 #Indice de la lista simple enlazada para las matrices ortogonales
 
 
+#-------------------------------Proceso agregar línea horizontal----------------------------------------------------
+def agregarLineaHorizontalMatriz():
+    global listaMatrix1
+    global indice
+    global marcoOperaciones
+    colInicial = askinteger('titulo', 'ingrese la columna inicial') - 1         #Dialogos de entrada
+    filInicial = askinteger('titulo', 'ingrese la fila inicial') - 1
+    cantidadElementos = askinteger('titulo', 'Ingrese el número de elementos para la línea')
+    colFin = colInicial + cantidadElementos
+
+    colNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).columnas
+    filNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).filas
+    #Se crea el nodo con posición y NOMBRE
+    listaMatrix1.insertarFinal(indice, 'Matriz_linea_horizontal', colNuevaOrtogonal, filNuevaOrtogonal) 
+    cadenaMatrizOrtogonal0 = listaMatrix1.buscarPosicionMatriz(0).matrizOrtogonal.devolvercadena(colNuevaOrtogonal, filNuevaOrtogonal)
+    
+    listaMatrix1.buscarNombreMatriz('Matriz_linea_horizontal').matrizOrtogonal.llenado(colNuevaOrtogonal, filNuevaOrtogonal, cadenaMatrizOrtogonal0)
+    for i in range(colInicial, colFin):
+        listaMatrix1.buscarNombreMatriz('Matriz_linea_horizontal').matrizOrtogonal.buscarNodoSustituirDato(i, filInicial, '*')
+    
+    listaMatrix1.buscarNombreMatriz('Matriz_linea_horizontal').matrizOrtogonal.crearGrafo('Matriz_linea_horizontal', colNuevaOrtogonal, filNuevaOrtogonal)
+    noImagen3 = Image.open('grafos/Matriz_linea_horizontal.dot.png')
+    tamanoImagen3 = noImagen3.resize((250, 250))
+    renderizadoImagen3 = ImageTk.PhotoImage(tamanoImagen3)
+    imagen3lbl = Label(marcoInicial, image=renderizadoImagen3)
+    imagen3lbl.image = renderizadoImagen3
+    imagen3lbl.place(x=570, y=90)
+    
+    agregarLineaHorizontal = Button(marcoOperaciones, text='Agregar línea horizontal', state=DISABLED)   #Deshabilitar botón secundario
+    agregarLineaHorizontal.place(x=10, y=60)
+
+    indice = indice + 1                                 #Indice de la lista simple enlazada para las matrices ortogonales
+
+
+#-------------------------------Proceso agregar línea vertical----------------------------------------------------
+def agregarLineaVerticallMatriz():
+    global listaMatrix1
+    global indice
+    global marcoOperaciones
+    colInicial = askinteger('titulo', 'ingrese la columna inicial') - 1         #Dialogos de entrada
+    filInicial = askinteger('titulo', 'ingrese la fila inicial') - 1
+    cantidadElementos = askinteger('titulo', 'Ingrese el número de elementos para la línea')
+    filFin = filInicial + cantidadElementos
+
+    colNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).columnas
+    filNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).filas
+    #Se crea el nodo con posición y NOMBRE
+    listaMatrix1.insertarFinal(indice, 'Matriz_linea_vertical', colNuevaOrtogonal, filNuevaOrtogonal) 
+    cadenaMatrizOrtogonal0 = listaMatrix1.buscarPosicionMatriz(0).matrizOrtogonal.devolvercadena(colNuevaOrtogonal, filNuevaOrtogonal)
+    
+    listaMatrix1.buscarNombreMatriz('Matriz_linea_vertical').matrizOrtogonal.llenado(colNuevaOrtogonal, filNuevaOrtogonal, cadenaMatrizOrtogonal0)
+    for i in range(filInicial, filFin):
+        listaMatrix1.buscarNombreMatriz('Matriz_linea_vertical').matrizOrtogonal.buscarNodoSustituirDato(colInicial, i, '*')
+    
+    listaMatrix1.buscarNombreMatriz('Matriz_linea_vertical').matrizOrtogonal.crearGrafo('Matriz_linea_vertical', colNuevaOrtogonal, filNuevaOrtogonal)
+    noImagen3 = Image.open('grafos/Matriz_linea_vertical.dot.png')
+    tamanoImagen3 = noImagen3.resize((250, 250))
+    renderizadoImagen3 = ImageTk.PhotoImage(tamanoImagen3)
+    imagen3lbl = Label(marcoInicial, image=renderizadoImagen3)
+    imagen3lbl.image = renderizadoImagen3
+    imagen3lbl.place(x=570, y=90)
+    
+    agregarLineaVertical = Button(marcoOperaciones, text='Agregar línea vertical', state=DISABLED)   #Deshabilitar botón secundario
+    agregarLineaVertical.place(x=160, y=60)
+
+    indice = indice + 1                                 #Indice de la lista simple enlazada para las matrices ortogonales
+
+
 #---------------------------------Mostrar operaciones que se pueden realizar----------------------------------------
 
 def mostrarOperaciones():
@@ -232,9 +300,9 @@ def mostrarOperaciones():
         transpuesta.place(x=310, y=10)
         limpiarZona = Button(marcoOperaciones, text='Limpiar zona', command=limpiarZonaImagen)
         limpiarZona.place(x=420, y=10)
-        agregarLineaHorizontal = Button(marcoOperaciones, text='Agregar línea horizontal')
+        agregarLineaHorizontal = Button(marcoOperaciones, text='Agregar línea horizontal', command=agregarLineaHorizontalMatriz)
         agregarLineaHorizontal.place(x=10, y=60)
-        agregarLineaVertical = Button(marcoOperaciones, text='Agregar línea vertical')
+        agregarLineaVertical = Button(marcoOperaciones, text='Agregar línea vertical', command=agregarLineaVerticallMatriz)
         agregarLineaVertical.place(x=160, y=60)
         agregarRectangulo = Button(marcoOperaciones, text='Agregar ractángulo')
         agregarRectangulo.place(x=290, y=60)
@@ -291,7 +359,6 @@ renderizadoImagen3 = ImageTk.PhotoImage(tamanoImagen3)
 imagen3lbl = Label(marcoInicial, image=renderizadoImagen3)
 imagen3lbl.image = renderizadoImagen3
 imagen3lbl.place(x=570, y=90)
-
 
 
 ventanaInicial.mainloop()                                       #Ejecutar hasta cerrar

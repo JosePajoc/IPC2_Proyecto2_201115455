@@ -103,15 +103,15 @@ class matrizOrtogonal():
         salidaImagen.write('</table>>]; \n')
         salidaImagen.write('}')
         salidaImagen.close()
-        render('dot', 'png', nombreGrafo)                         #Renderizar el archivo DOT escrito
+        render('dot', 'png', nombreGrafo)                                #Renderizar el archivo DOT escrito
 
-    def buscarNodo(self, columna, fila):                          #Busca un nodo por sus coordenadas y muestra su dato
+    def buscarNodo(self, columna, fila):                                #Busca un nodo por sus coordenadas y muestra su dato
         temporal = self.filas.buscarCabeceraHorizontal(fila).filaDatos
         temporal2 = temporal.buscarColumna(columna)
         temporalDatoNodo = temporal2.dato
         return temporalDatoNodo
     
-    def buscarNodoSustituirDato(self, columna, fila, nuevoDato):  #Busca un nodo por sus coordenadas y actualiza su dato
+    def buscarNodoSustituirDato(self, columna, fila, nuevoDato):        #Busca un nodo por sus coordenadas y actualiza su dato
         temporal = self.filas.buscarCabeceraHorizontal(fila).filaDatos
         temporal2 = temporal.buscarColumna(columna)
         temporal2.dato = nuevoDato
