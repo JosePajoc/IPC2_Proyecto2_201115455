@@ -103,16 +103,33 @@ class matrizOrtogonal():
         salidaImagen.write('</table>>]; \n')
         salidaImagen.write('}')
         salidaImagen.close()
-        render('dot', 'png', nombreGrafo)                 #Renderizar el archivo DOT escrito
+        render('dot', 'png', nombreGrafo)                         #Renderizar el archivo DOT escrito
 
-
+    def buscarNodo(self, columna, fila):                          #Busca un nodo por sus coordenadas y muestra su dato
+        temporal = self.filas.buscarCabeceraHorizontal(fila).filaDatos
+        temporal2 = temporal.buscarColumna(columna)
+        temporalDatoNodo = temporal2.dato
+        return temporalDatoNodo
+    
+    def buscarNodoSustituirDato(self, columna, fila, nuevoDato):  #Busca un nodo por sus coordenadas y actualiza su dato
+        temporal = self.filas.buscarCabeceraHorizontal(fila).filaDatos
+        temporal2 = temporal.buscarColumna(columna)
+        temporal2.dato = nuevoDato
+        
 
 '''
 matriz1 = matrizOrtogonal()
 matriz1.llenado(5, 8, '------***--*-*--***-------*-*---*---*-*-')
 matriz1.mostrarMatriz(5, 8)
 #print(matriz1.filas.buscarCabeceraHorizontal(1).filaDatos.inicio.derecha.derecha.arriba.dato)
-matriz1.crearGrafo('matriz de prueba', 5, 8)
+#matriz1.crearGrafo('matriz de prueba', 5, 8)
+#print(matriz1.buscarNodo(1,5) , matriz1.buscarNodo(2,5),matriz1.buscarNodo(3,5))
+#print(matriz1.buscarNodo(1,6) , matriz1.buscarNodo(2,6),matriz1.buscarNodo(3,6))
+matriz1.buscarNodoSustituirDato(1,5, '#')
+matriz1.buscarNodoSustituirDato(2,5, '#')
+matriz1.buscarNodoSustituirDato(3,5, '#')
+print('')
+matriz1.mostrarMatriz(5,8)
 
 matriz1_1 = matrizOrtogonal()
 matriz1_1.llenadoRotacionVertical(10, 10, '-----------***-***----*--***----*--*-----***-*---------------***-***---*-----*---***-***------------')

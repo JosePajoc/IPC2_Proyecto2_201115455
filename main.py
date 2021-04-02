@@ -2,6 +2,7 @@ from tkinter import filedialog                      #Módulo para abrir ventana 
 from tkinter import messagebox                      #Módulo para cuadros de mensaje
 from tkinter import *                               #Módulo para entorno gráfico
 from nodoMatrix import listaMatrizOrtogonal         #Módulo para crear lista enlazada simplde de matrices ortogonales
+from tkinter.simpledialog import *                  #Dialogos de entrada, debe ir antes del PIL caso contrario da error
 from PIL import Image, ImageTk                      #Instalar módulo, pip install Pillow, para usar imagenes con más opciones
 
 import xml.etree.ElementTree as ET                  #importando libreria para manipular XML
@@ -34,7 +35,6 @@ def cargarXML(ruta):
     procesarXML()
     #except:
     #messagebox.showinfo("información", "No se pudo cargar el archivo...")
-
 
 def procesarXML():
     global documentoXML
@@ -181,6 +181,41 @@ def transpuestaMatriz():
     indice = indice + 1                                 #Indice de la lista simple enlazada para las matrices ortogonales
 
 
+#-------------------------------Proceso limpiar zona de una imagen----------------------------------------------------
+def limpiarZonaImagen():
+    global listaMatrix1
+    global indice
+    global marcoOperaciones
+    colInicial = askinteger('titulo', 'ingrese la columna inicial') - 1         #Dialogos de entrada
+    filInicial = askinteger('titulo', 'ingrese la fila inicial') - 1
+    colFinal = askinteger('titulo', 'ingrese la columna final')
+    filFinal = askinteger('titulo', 'ingrese la fila final')
+
+    colNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).columnas
+    filNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).filas
+    #Se crea el nodo con posición y NOMBRE
+    listaMatrix1.insertarFinal(indice, 'Matriz_imagen_limpia', colNuevaOrtogonal, filNuevaOrtogonal) 
+    cadenaMatrizOrtogonal0 = listaMatrix1.buscarPosicionMatriz(0).matrizOrtogonal.devolvercadena(colNuevaOrtogonal, filNuevaOrtogonal)
+    
+    listaMatrix1.buscarNombreMatriz('Matriz_imagen_limpia').matrizOrtogonal.llenado(colNuevaOrtogonal, filNuevaOrtogonal, cadenaMatrizOrtogonal0)
+    for i in range(colInicial, colFinal):
+        for j in range(filInicial, filFinal):
+            listaMatrix1.buscarNombreMatriz('Matriz_imagen_limpia').matrizOrtogonal.buscarNodoSustituirDato(i, j, '-')
+    
+    listaMatrix1.buscarNombreMatriz('Matriz_imagen_limpia').matrizOrtogonal.crearGrafo('Matriz_imagen_limpia', colNuevaOrtogonal, filNuevaOrtogonal)
+    noImagen3 = Image.open('grafos/Matriz_imagen_limpia.dot.png')
+    tamanoImagen3 = noImagen3.resize((250, 250))
+    renderizadoImagen3 = ImageTk.PhotoImage(tamanoImagen3)
+    imagen3lbl = Label(marcoInicial, image=renderizadoImagen3)
+    imagen3lbl.image = renderizadoImagen3
+    imagen3lbl.place(x=570, y=90)
+    
+    limpiarZona = Button(marcoOperaciones, text='Limpiar Zona', state=DISABLED)   #Deshabilitar botón secundario
+    limpiarZona.place(x=420, y=10)
+
+    indice = indice + 1                                 #Indice de la lista simple enlazada para las matrices ortogonales
+
+
 #---------------------------------Mostrar operaciones que se pueden realizar----------------------------------------
 
 def mostrarOperaciones():
@@ -195,7 +230,7 @@ def mostrarOperaciones():
         rotacionVertical.place(x=160, y=10)
         transpuesta = Button(marcoOperaciones, text='Transpuesta', command=transpuestaMatriz)
         transpuesta.place(x=310, y=10)
-        limpiarZona = Button(marcoOperaciones, text='Limpiar zona')
+        limpiarZona = Button(marcoOperaciones, text='Limpiar zona', command=limpiarZonaImagen)
         limpiarZona.place(x=420, y=10)
         agregarLineaHorizontal = Button(marcoOperaciones, text='Agregar línea horizontal')
         agregarLineaHorizontal.place(x=10, y=60)
@@ -256,6 +291,7 @@ renderizadoImagen3 = ImageTk.PhotoImage(tamanoImagen3)
 imagen3lbl = Label(marcoInicial, image=renderizadoImagen3)
 imagen3lbl.image = renderizadoImagen3
 imagen3lbl.place(x=570, y=90)
+
 
 
 ventanaInicial.mainloop()                                       #Ejecutar hasta cerrar

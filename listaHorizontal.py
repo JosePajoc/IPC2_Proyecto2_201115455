@@ -46,6 +46,15 @@ class listaHorizontal():
                 print("Columna " , temporal.columna , " fila: " , temporal.fila , " dato: " , temporal.dato)
                 temporal = temporal.derecha
 
+    def buscarColumna(self, columna):               #Buscando una columna entre las cabeceras
+        if self.verVacioHorizontal() == False:
+            temporal = self.inicio
+            while temporal is not None:
+                if temporal.columna == columna:
+                    return temporal
+                else:
+                    temporal = temporal.derecha
+        return None
 
 '''
 lista1 = listaHorizontal()
@@ -56,4 +65,10 @@ lista1.insertar(nodo(30, 5, 0))
 lista1.insertar(nodo(15, 4, 0))
 
 lista1.mostrarListaHorizontal()
+
+if lista1.buscarColumna(2) == None:
+    print('No existe la columna')
+else:
+    print('Si existe la columna')
+    print(lista1.buscarColumna(2).dato)
 '''
