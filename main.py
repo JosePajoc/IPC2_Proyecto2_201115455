@@ -216,7 +216,7 @@ def limpiarZonaImagen():
     indice = indice + 1                                 #Indice de la lista simple enlazada para las matrices ortogonales
 
 
-#-------------------------------Proceso agregar línea horizontal----------------------------------------------------
+#-------------------------------Proceso agregar línea horizontal------------------------------------------------------
 def agregarLineaHorizontalMatriz():
     global listaMatrix1
     global indice
@@ -250,7 +250,7 @@ def agregarLineaHorizontalMatriz():
     indice = indice + 1                                 #Indice de la lista simple enlazada para las matrices ortogonales
 
 
-#-------------------------------Proceso agregar línea vertical----------------------------------------------------
+#-------------------------------Proceso agregar línea vertical-------------------------------------------------------
 def agregarLineaVerticallMatriz():
     global listaMatrix1
     global indice
@@ -284,6 +284,99 @@ def agregarLineaVerticallMatriz():
     indice = indice + 1                                 #Indice de la lista simple enlazada para las matrices ortogonales
 
 
+#-----------------------------------------Proceso agregar rectángulo------------------------------------------------------
+def agregarRectanguloMatriz():
+    global listaMatrix1
+    global indice
+    global marcoOperaciones
+    colInicial = askinteger('titulo', 'ingrese la columna inicial') - 1         #Dialogos de entrada
+    filInicial = askinteger('titulo', 'ingrese la fila inicial') - 1
+    cantidadElemeCol = askinteger('titulo', 'Ingrese la cantidad de elementos para las columnas')
+    cantidadElemeFil = askinteger('titulo', 'Ingrese la cantidad de elementos para las filas')
+    colFin = colInicial + cantidadElemeCol
+    filFin = filInicial + cantidadElemeFil
+
+    colNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).columnas
+    filNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).filas
+    #Se crea el nodo con posición y NOMBRE
+    listaMatrix1.insertarFinal(indice, 'Matriz_con_rectangulo', colNuevaOrtogonal, filNuevaOrtogonal) 
+    cadenaMatrizOrtogonal0 = listaMatrix1.buscarPosicionMatriz(0).matrizOrtogonal.devolvercadena(colNuevaOrtogonal, filNuevaOrtogonal)
+    
+    listaMatrix1.buscarNombreMatriz('Matriz_con_rectangulo').matrizOrtogonal.llenado(colNuevaOrtogonal, filNuevaOrtogonal, cadenaMatrizOrtogonal0)
+    #Línea superior, aumento en columnas
+    for i in range(colInicial, colFin):
+        listaMatrix1.buscarNombreMatriz('Matriz_con_rectangulo').matrizOrtogonal.buscarNodoSustituirDato(i, filInicial, '*')
+    #Línea inferior, aumento en columnas, se resta a la fila 1 por iniciar en cero los índices
+    for i in range(colInicial, colFin):
+        listaMatrix1.buscarNombreMatriz('Matriz_con_rectangulo').matrizOrtogonal.buscarNodoSustituirDato(i, filFin - 1, '*')
+    
+    #Línea izquierda, aumento en filas
+    for i in range(filInicial, filFin):
+        listaMatrix1.buscarNombreMatriz('Matriz_con_rectangulo').matrizOrtogonal.buscarNodoSustituirDato(colInicial, i, '*')
+    #Línea derecha, aumento en filas, se resta a la columna 1 por iniciar en cero los índices
+    for i in range(filInicial, filFin):
+        listaMatrix1.buscarNombreMatriz('Matriz_con_rectangulo').matrizOrtogonal.buscarNodoSustituirDato(colFin - 1, i, '*')
+    
+    listaMatrix1.buscarNombreMatriz('Matriz_con_rectangulo').matrizOrtogonal.crearGrafo('Matriz_con_rectangulo', colNuevaOrtogonal, filNuevaOrtogonal)
+    noImagen3 = Image.open('grafos/Matriz_con_rectangulo.dot.png')
+    tamanoImagen3 = noImagen3.resize((250, 250))
+    renderizadoImagen3 = ImageTk.PhotoImage(tamanoImagen3)
+    imagen3lbl = Label(marcoInicial, image=renderizadoImagen3)
+    imagen3lbl.image = renderizadoImagen3
+    imagen3lbl.place(x=570, y=90)
+    
+    agregarRectangulo = Button(marcoOperaciones, text='Agregar ractángulo', state=DISABLED)   #Deshabilitar botón secundario
+    agregarRectangulo.place(x=290, y=60)
+
+    indice = indice + 1                                 #Indice de la lista simple enlazada para las matrices ortogonales
+
+#---------------------------------------Proceso agregar Triángulo rectángulo----------------------------------------------
+def agregarTrianRecMatriz():
+    global listaMatrix1
+    global indice
+    global marcoOperaciones
+    colInicial = askinteger('titulo', 'ingrese la columna inicial') - 1         #Dialogos de entrada
+    filInicial = askinteger('titulo', 'ingrese la fila inicial') - 1
+    cantidadElemeCol = cantidadElemeFil = askinteger('titulo', 'Ingrese la cantidad de elementos')
+    #cantidadElemeFil = askinteger('titulo', 'Ingrese la cantidad de elementos para la fila')
+    colFin = colInicial + cantidadElemeCol
+    filFin = filInicial + cantidadElemeFil
+
+    colNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).columnas
+    filNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).filas
+    #Se crea el nodo con posición y NOMBRE
+    listaMatrix1.insertarFinal(indice, 'Matriz_con_triangulo_rectangulo', colNuevaOrtogonal, filNuevaOrtogonal) 
+    cadenaMatrizOrtogonal0 = listaMatrix1.buscarPosicionMatriz(0).matrizOrtogonal.devolvercadena(colNuevaOrtogonal, filNuevaOrtogonal)
+    
+    listaMatrix1.buscarNombreMatriz('Matriz_con_triangulo_rectangulo').matrizOrtogonal.llenado(colNuevaOrtogonal, filNuevaOrtogonal, cadenaMatrizOrtogonal0)
+    #Fila de la figura
+    for i in range(colInicial, colFin):
+        listaMatrix1.buscarNombreMatriz('Matriz_con_triangulo_rectangulo').matrizOrtogonal.buscarNodoSustituirDato(i, filFin - 1, '*')
+    
+    #Columna de la figura
+    for i in range(filInicial, filFin):
+        listaMatrix1.buscarNombreMatriz('Matriz_con_triangulo_rectangulo').matrizOrtogonal.buscarNodoSustituirDato(colInicial, i, '*')
+    
+    #Línea inclinada de la figura
+    col = colInicial
+    for fil in range(filInicial, filFin):
+        listaMatrix1.buscarNombreMatriz('Matriz_con_triangulo_rectangulo').matrizOrtogonal.buscarNodoSustituirDato(col, fil, '*')
+        col = col + 1
+    
+    listaMatrix1.buscarNombreMatriz('Matriz_con_triangulo_rectangulo').matrizOrtogonal.crearGrafo('Matriz_con_triangulo_rectangulo', colNuevaOrtogonal, filNuevaOrtogonal)
+    noImagen3 = Image.open('grafos/Matriz_con_triangulo_rectangulo.dot.png')
+    tamanoImagen3 = noImagen3.resize((250, 250))
+    renderizadoImagen3 = ImageTk.PhotoImage(tamanoImagen3)
+    imagen3lbl = Label(marcoInicial, image=renderizadoImagen3)
+    imagen3lbl.image = renderizadoImagen3
+    imagen3lbl.place(x=570, y=90)
+    
+    agregarTrianguloRectangulo = Button(marcoOperaciones, text='Agregar triángulo rectángulo', state=DISABLED)   #Deshabilitar botón secundario
+    agregarTrianguloRectangulo.place(x=410, y=60)
+
+    indice = indice + 1                                 #Indice de la lista simple enlazada para las matrices ortogonales
+
+
 #---------------------------------Mostrar operaciones que se pueden realizar----------------------------------------
 
 def mostrarOperaciones():
@@ -304,9 +397,9 @@ def mostrarOperaciones():
         agregarLineaHorizontal.place(x=10, y=60)
         agregarLineaVertical = Button(marcoOperaciones, text='Agregar línea vertical', command=agregarLineaVerticallMatriz)
         agregarLineaVertical.place(x=160, y=60)
-        agregarRectangulo = Button(marcoOperaciones, text='Agregar ractángulo')
+        agregarRectangulo = Button(marcoOperaciones, text='Agregar ractángulo', command=agregarRectanguloMatriz)
         agregarRectangulo.place(x=290, y=60)
-        agregarTrianguloRectangulo = Button(marcoOperaciones, text='Agregar triángulo rectángulo')
+        agregarTrianguloRectangulo = Button(marcoOperaciones, text='Agregar triángulo rectángulo', command=agregarTrianRecMatriz)
         agregarTrianguloRectangulo.place(x=410, y=60)
     else:
         marcoOperaciones = LabelFrame(marcoInicial, text="La operaciones para dos matriz son:", height=120, width=600)
