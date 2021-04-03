@@ -4,6 +4,7 @@ from tkinter import *                               #Módulo para entorno gráfi
 from nodoMatrix import listaMatrizOrtogonal         #Módulo para crear lista enlazada simplde de matrices ortogonales
 from tkinter.simpledialog import *                  #Dialogos de entrada, debe ir antes del PIL caso contrario da error
 from PIL import Image, ImageTk                      #Instalar módulo, pip install Pillow, para usar imagenes con más opciones
+from datetime import datetime                       #Módulo para hacer uso de la fecha y hora actual
 
 import xml.etree.ElementTree as ET                  #importando libreria para manipular XML
 
@@ -23,6 +24,11 @@ matricesRaiz = None                                             #Variable para l
 listaMatrix1 = listaMatrizOrtogonal()                           #Creación de lista simple enlazada para las matrices ortogonales
 indice = 0                                                      #Indice global para saber cuantas matrices ortogonales existen
 marcoOperaciones = None
+
+def obtnerFecha():
+    fechaActual = datetime.now()
+    formatoSalida = str(fechaActual.day) + '/' + str(fechaActual.month) + '/' + str(fechaActual.year) + ' - ' + str(fechaActual.hour) + ':' + str(fechaActual.minute) + ':' + str(fechaActual.second)
+    return formatoSalida
 
 def cargarXML(ruta):
     global documentoXML
@@ -55,8 +61,8 @@ def procesarXML():
             imagenEntrada = imagenEntrada.replace('\n','')
             imagenEntrada = imagenEntrada.replace('    ','')
 
-
-        listaMatrix1.insertarFinal(indice, matriz[0].text, columnas, filas)      #Se crea el nodo con posición y NOMBRE
+        
+        listaMatrix1.insertarFinal(indice, matriz[0].text, columnas, filas, obtnerFecha()) #Se crea el nodo con posición, nombre, dimensiones y fecha de creación
         if indice == 0:
             nombreM1 = matriz[0].text
         elif indice == 1:
@@ -116,7 +122,7 @@ def rotacionHorizontalMatriz():
     colNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).columnas
     filNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).filas
     #Se crea el nodo con posición y NOMBRE
-    listaMatrix1.insertarFinal(indice, 'Matriz_Rotacion_Horizontal', colNuevaOrtogonal, filNuevaOrtogonal) 
+    listaMatrix1.insertarFinal(indice, 'Matriz_Rotacion_Horizontal', colNuevaOrtogonal, filNuevaOrtogonal, obtnerFecha()) 
     cadenaMatrizOrtogonal0 = listaMatrix1.buscarPosicionMatriz(0).matrizOrtogonal.devolvercadena(colNuevaOrtogonal, filNuevaOrtogonal)
     #print(cadenaMatrizOrtogonal0)
     listaMatrix1.buscarNombreMatriz('Matriz_Rotacion_Horizontal').matrizOrtogonal.llenadoRotacionHorizontal(colNuevaOrtogonal, filNuevaOrtogonal, cadenaMatrizOrtogonal0)
@@ -143,7 +149,7 @@ def rotacionVerticalMatriz():
     colNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).columnas
     filNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).filas
     #Se crea el nodo con posición y NOMBRE
-    listaMatrix1.insertarFinal(indice, 'Matriz_Rotacion_Vertical', colNuevaOrtogonal, filNuevaOrtogonal) 
+    listaMatrix1.insertarFinal(indice, 'Matriz_Rotacion_Vertical', colNuevaOrtogonal, filNuevaOrtogonal, obtnerFecha()) 
     cadenaMatrizOrtogonal0 = listaMatrix1.buscarPosicionMatriz(0).matrizOrtogonal.devolvercadena(colNuevaOrtogonal, filNuevaOrtogonal)
     
     listaMatrix1.buscarNombreMatriz('Matriz_Rotacion_Vertical').matrizOrtogonal.llenadoRotacionVertical(colNuevaOrtogonal, filNuevaOrtogonal, cadenaMatrizOrtogonal0)
@@ -170,7 +176,7 @@ def transpuestaMatriz():
     colNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).columnas
     filNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).filas
     #Se crea el nodo con posición, NOMBRE y cambio de COLUMNAS por FILAS
-    listaMatrix1.insertarFinal(indice, 'Matriz_Transpuesta', filNuevaOrtogonal, colNuevaOrtogonal) 
+    listaMatrix1.insertarFinal(indice, 'Matriz_Transpuesta', filNuevaOrtogonal, colNuevaOrtogonal, obtnerFecha()) 
     cadenaMatrizOrtogonal0 = listaMatrix1.buscarPosicionMatriz(0).matrizOrtogonal.devolvercadena(colNuevaOrtogonal, filNuevaOrtogonal)
     
     listaMatrix1.buscarNombreMatriz('Matriz_Transpuesta').matrizOrtogonal.transpuesta(colNuevaOrtogonal, filNuevaOrtogonal, cadenaMatrizOrtogonal0)
@@ -203,7 +209,7 @@ def limpiarZonaImagen():
     colNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).columnas
     filNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).filas
     #Se crea el nodo con posición y NOMBRE
-    listaMatrix1.insertarFinal(indice, 'Matriz_imagen_limpia', colNuevaOrtogonal, filNuevaOrtogonal) 
+    listaMatrix1.insertarFinal(indice, 'Matriz_imagen_limpia', colNuevaOrtogonal, filNuevaOrtogonal, obtnerFecha()) 
     cadenaMatrizOrtogonal0 = listaMatrix1.buscarPosicionMatriz(0).matrizOrtogonal.devolvercadena(colNuevaOrtogonal, filNuevaOrtogonal)
     
     listaMatrix1.buscarNombreMatriz('Matriz_imagen_limpia').matrizOrtogonal.llenado(colNuevaOrtogonal, filNuevaOrtogonal, cadenaMatrizOrtogonal0)
@@ -238,7 +244,7 @@ def agregarLineaHorizontalMatriz():
     colNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).columnas
     filNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).filas
     #Se crea el nodo con posición y NOMBRE
-    listaMatrix1.insertarFinal(indice, 'Matriz_linea_horizontal', colNuevaOrtogonal, filNuevaOrtogonal) 
+    listaMatrix1.insertarFinal(indice, 'Matriz_linea_horizontal', colNuevaOrtogonal, filNuevaOrtogonal, obtnerFecha()) 
     cadenaMatrizOrtogonal0 = listaMatrix1.buscarPosicionMatriz(0).matrizOrtogonal.devolvercadena(colNuevaOrtogonal, filNuevaOrtogonal)
     
     listaMatrix1.buscarNombreMatriz('Matriz_linea_horizontal').matrizOrtogonal.llenado(colNuevaOrtogonal, filNuevaOrtogonal, cadenaMatrizOrtogonal0)
@@ -272,7 +278,7 @@ def agregarLineaVerticallMatriz():
     colNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).columnas
     filNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).filas
     #Se crea el nodo con posición y NOMBRE
-    listaMatrix1.insertarFinal(indice, 'Matriz_linea_vertical', colNuevaOrtogonal, filNuevaOrtogonal) 
+    listaMatrix1.insertarFinal(indice, 'Matriz_linea_vertical', colNuevaOrtogonal, filNuevaOrtogonal, obtnerFecha()) 
     cadenaMatrizOrtogonal0 = listaMatrix1.buscarPosicionMatriz(0).matrizOrtogonal.devolvercadena(colNuevaOrtogonal, filNuevaOrtogonal)
     
     listaMatrix1.buscarNombreMatriz('Matriz_linea_vertical').matrizOrtogonal.llenado(colNuevaOrtogonal, filNuevaOrtogonal, cadenaMatrizOrtogonal0)
@@ -308,7 +314,7 @@ def agregarRectanguloMatriz():
     colNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).columnas
     filNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).filas
     #Se crea el nodo con posición y NOMBRE
-    listaMatrix1.insertarFinal(indice, 'Matriz_con_rectangulo', colNuevaOrtogonal, filNuevaOrtogonal) 
+    listaMatrix1.insertarFinal(indice, 'Matriz_con_rectangulo', colNuevaOrtogonal, filNuevaOrtogonal, obtnerFecha()) 
     cadenaMatrizOrtogonal0 = listaMatrix1.buscarPosicionMatriz(0).matrizOrtogonal.devolvercadena(colNuevaOrtogonal, filNuevaOrtogonal)
     
     listaMatrix1.buscarNombreMatriz('Matriz_con_rectangulo').matrizOrtogonal.llenado(colNuevaOrtogonal, filNuevaOrtogonal, cadenaMatrizOrtogonal0)
@@ -354,7 +360,7 @@ def agregarTrianRecMatriz():
     colNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).columnas
     filNuevaOrtogonal = listaMatrix1.buscarPosicionMatriz(0).filas
     #Se crea el nodo con posición y NOMBRE
-    listaMatrix1.insertarFinal(indice, 'Matriz_con_triangulo_rectangulo', colNuevaOrtogonal, filNuevaOrtogonal) 
+    listaMatrix1.insertarFinal(indice, 'Matriz_con_triangulo_rectangulo', colNuevaOrtogonal, filNuevaOrtogonal, obtnerFecha()) 
     cadenaMatrizOrtogonal0 = listaMatrix1.buscarPosicionMatriz(0).matrizOrtogonal.devolvercadena(colNuevaOrtogonal, filNuevaOrtogonal)
     
     listaMatrix1.buscarNombreMatriz('Matriz_con_triangulo_rectangulo').matrizOrtogonal.llenado(colNuevaOrtogonal, filNuevaOrtogonal, cadenaMatrizOrtogonal0)
@@ -400,7 +406,7 @@ def unionMatrices():
     
     if (colOrto1 * filOrto1) > (colOrto2 * filOrto2):
         #Se crea el nodo con posición y NOMBRE
-        listaMatrix1.insertarFinal(indice, 'Matriz_union', colOrto1, filOrto1)
+        listaMatrix1.insertarFinal(indice, 'Matriz_union', colOrto1, filOrto1, obtnerFecha())
         cadenaMatrizOrtogonal0 = listaMatrix1.buscarPosicionMatriz(0).matrizOrtogonal.devolvercadena(colOrto1, filOrto1)
         listaMatrix1.buscarNombreMatriz('Matriz_union').matrizOrtogonal.llenado(colOrto1, filOrto1, cadenaMatrizOrtogonal0)
         for col in range(colOrto2):
@@ -409,7 +415,7 @@ def unionMatrices():
                     listaMatrix1.buscarNombreMatriz('Matriz_union').matrizOrtogonal.buscarNodoSustituirDato(col, fil, '*')
         listaMatrix1.buscarNombreMatriz('Matriz_union').matrizOrtogonal.crearGrafo('Matriz_union', colOrto1, filOrto1)
     else:
-        listaMatrix1.insertarFinal(indice, 'Matriz_union', colOrto2, filOrto2)
+        listaMatrix1.insertarFinal(indice, 'Matriz_union', colOrto2, filOrto2, obtnerFecha())
         cadenaMatrizOrtogonal0 = listaMatrix1.buscarPosicionMatriz(1).matrizOrtogonal.devolvercadena(colOrto2, filOrto2)
         listaMatrix1.buscarNombreMatriz('Matriz_union').matrizOrtogonal.llenado(colOrto2, filOrto2, cadenaMatrizOrtogonal0)
         for col in range(colOrto1):
@@ -445,7 +451,7 @@ def interseccionMatrices():
     
     if (colOrto1 * filOrto1) > (colOrto2 * filOrto2):
     
-        listaMatrix1.insertarFinal(indice, 'Matriz_interseccion', colOrto1, filOrto1)
+        listaMatrix1.insertarFinal(indice, 'Matriz_interseccion', colOrto1, filOrto1, obtnerFecha())
         listaMatrix1.buscarNombreMatriz('Matriz_interseccion').matrizOrtogonal.llenadoVacio(colOrto1, filOrto1)
         for col in range(colOrto2):
             for fil in range(filOrto2):
@@ -461,7 +467,7 @@ def interseccionMatrices():
         listaMatrix1.buscarNombreMatriz('Matriz_interseccion').matrizOrtogonal.crearGrafo('Matriz_interseccion', colOrto1, filOrto1)
     else:
         
-        listaMatrix1.insertarFinal(indice, 'Matriz_interseccion', colOrto2, filOrto2)
+        listaMatrix1.insertarFinal(indice, 'Matriz_interseccion', colOrto2, filOrto2, obtnerFecha())
         listaMatrix1.buscarNombreMatriz('Matriz_interseccion').matrizOrtogonal.llenadoVacio(colOrto2, filOrto2)
         for col in range(colOrto1):
             for fil in range(filOrto1):
@@ -503,7 +509,7 @@ def diferenciaSimetricaMatrices():
     
     if (colOrto1 * filOrto1) > (colOrto2 * filOrto2):
         #Se crea el nodo con posición y NOMBRE
-        listaMatrix1.insertarFinal(indice, 'Matriz_diferencia_simetrica', colOrto1, filOrto1)
+        listaMatrix1.insertarFinal(indice, 'Matriz_diferencia_simetrica', colOrto1, filOrto1, obtnerFecha())
         listaMatrix1.buscarNombreMatriz('Matriz_diferencia_simetrica').matrizOrtogonal.llenadoVacio(colOrto1, filOrto1)
         for col in range(colOrto1):
             for fil in range(filOrto1):
@@ -519,7 +525,7 @@ def diferenciaSimetricaMatrices():
         listaMatrix1.buscarNombreMatriz('Matriz_diferencia_simetrica').matrizOrtogonal.crearGrafo('Matriz_diferencia_simetrica', colOrto1, filOrto1)
     else:
         
-        listaMatrix1.insertarFinal(indice, 'Matriz_diferencia_simetrica', colOrto2, filOrto2)
+        listaMatrix1.insertarFinal(indice, 'Matriz_diferencia_simetrica', colOrto2, filOrto2, obtnerFecha())
         listaMatrix1.buscarNombreMatriz('Matriz_diferencia_simetrica').matrizOrtogonal.llenadoVacio(colOrto2, filOrto2)
         for col in range(colOrto1):
             for fil in range(filOrto1):
@@ -561,7 +567,7 @@ def diferenciaMatrices():
     
     if (colOrto1 * filOrto1) > (colOrto2 * filOrto2):
         #Se crea el nodo con posición y NOMBRE
-        listaMatrix1.insertarFinal(indice, 'Matriz_diferencia', colOrto1, filOrto1)
+        listaMatrix1.insertarFinal(indice, 'Matriz_diferencia', colOrto1, filOrto1, obtnerFecha())
         listaMatrix1.buscarNombreMatriz('Matriz_diferencia').matrizOrtogonal.llenadoVacio(colOrto1, filOrto1)
         for col in range(colOrto1):
             for fil in range(filOrto1):
@@ -575,7 +581,7 @@ def diferenciaMatrices():
         listaMatrix1.buscarNombreMatriz('Matriz_diferencia').matrizOrtogonal.crearGrafo('Matriz_diferencia', colOrto1, filOrto1)
     else:
         
-        listaMatrix1.insertarFinal(indice, 'Matriz_diferencia', colOrto2, filOrto2)
+        listaMatrix1.insertarFinal(indice, 'Matriz_diferencia', colOrto2, filOrto2, obtnerFecha())
         listaMatrix1.buscarNombreMatriz('Matriz_diferencia').matrizOrtogonal.llenadoVacio(colOrto2, filOrto2)
         for col in range(colOrto1):
             for fil in range(filOrto1):
@@ -656,7 +662,7 @@ def reporteMatrices():
     if indice > 1:
         asd
     else:
-        messagebox.showinfo('No se puede realizar un roperte porque no se ha echo ninguna operación...')
+        messagebox.showinfo('Información', 'No se puede realizar un reporte porque no se ha echo ninguna operación...')
 
 #-------------------------------------Abrir cuadro de dialogo para buscar--------------------------------------------
 def buscarXML():

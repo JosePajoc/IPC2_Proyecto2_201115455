@@ -1,11 +1,12 @@
 from matrizOrtogonal import matrizOrtogonal
 
 class nodoMatriz():
-    def __init__(self, posicion, nombre, columnas, filas):          #Datos de la matriz ortogonal
+    def __init__(self, posicion, nombre, columnas, filas, fechaCreacion):          #Datos de la matriz ortogonal
         self.posicion = posicion
         self.nombre = nombre
         self.columnas = columnas
         self.filas = filas
+        self.fechaCreacion = fechaCreacion
         self.siguiente = None
         self.matrizOrtogonal = matrizOrtogonal()
     
@@ -17,8 +18,8 @@ class listaMatrizOrtogonal():                                       #Lista simpl
     def verVacioListaMatrizOrtogonal(self):
         return self.inicio == None
     
-    def insertarFinal(self, posicion, nombre, columnas, filas):     #Agregar nodo al final
-        nuevoNodo = nodoMatriz(posicion, nombre, columnas, filas)
+    def insertarFinal(self, posicion, nombre, columnas, filas, fechaCreacion):     #Agregar nodo al final
+        nuevoNodo = nodoMatriz(posicion, nombre, columnas, filas, fechaCreacion)
         if self.verVacioListaMatrizOrtogonal():
             self.inicio = nuevoNodo
             self.fin = nuevoNodo
@@ -28,7 +29,7 @@ class listaMatrizOrtogonal():                                       #Lista simpl
                 temporal = temporal.siguiente
             temporal.siguiente = nuevoNodo
     
-    def mostrarListaMatrizOrtogonal(self):
+    def mostrarListaMatrizOrtogonal(self):                          #Temporal para ver datos en consola de la lista enlazada
         if self.verVacioListaMatrizOrtogonal() == False:
             temporal = self.inicio
             while temporal is not None:
