@@ -17,7 +17,7 @@ marcoInicial = Frame(ventanaInicial, width="850", height="500")
 marcoInicial.pack()                                             #Marco agregado a la ventana
 
 
-#--------------------------------------------Manejo del XML------------------------------------------------------------
+#--------------------------------------------Manejo del XML-----------------------------------------------------------
 documentoXML = None                                             #Variable para el archivo XML
 matricesRaiz = None                                             #Variable para la etiqueta matrices y así poder iterar
 listaMatrix1 = listaMatrizOrtogonal()                           #Creación de lista simple enlazada para las matrices ortogonales
@@ -64,7 +64,6 @@ def procesarXML():
 
         #Se busca el nodo creado, se llama al atributo tipo matriz ortogonal, se llena la matriz con la info de la imagen del XML
         listaMatrix1.buscarPosicionMatriz(indice).matrizOrtogonal.llenado(columnas, filas, imagenEntrada)
-
         #Crear imagenes a partir de la matriz ortogonal
         listaMatrix1.buscarPosicionMatriz(indice).matrizOrtogonal.crearGrafo(matriz[0].text, columnas, filas)
         
@@ -74,7 +73,7 @@ def procesarXML():
     mostrarImagenes(indice, nombreM1, nombreM2)
         
 
-#-----------------------------------------Mostrar imagenes en los visores------------------------------------------    
+#-----------------------------------------Mostrar imagenes en los visores--------------------------------------------    
 def mostrarImagenes(indice, nombreM1, nombreM2):
     if indice == 1:
         imagen1 = Image.open('grafos/' + nombreM1 + '.dot.png')
@@ -98,7 +97,7 @@ def mostrarImagenes(indice, nombreM1, nombreM2):
         imagen2lbl.image = renderizadoImagen2
         imagen2lbl.place(x=300, y=90)
 
-#-------------------------------Proceso rotación horizontal de una matriz---------------------------------------------
+#-------------------------------Proceso rotación horizontal de una matriz--------------------------------------------
 def rotacionHorizontalMatriz():
     global listaMatrix1
     global indice
@@ -136,7 +135,7 @@ def rotacionVerticalMatriz():
     #Se crea el nodo con posición y NOMBRE
     listaMatrix1.insertarFinal(indice, 'Matriz_Rotacion_Vertical', colNuevaOrtogonal, filNuevaOrtogonal) 
     cadenaMatrizOrtogonal0 = listaMatrix1.buscarPosicionMatriz(0).matrizOrtogonal.devolvercadena(colNuevaOrtogonal, filNuevaOrtogonal)
-    #print(cadenaMatrizOrtogonal0)
+    
     listaMatrix1.buscarNombreMatriz('Matriz_Rotacion_Vertical').matrizOrtogonal.llenadoRotacionVertical(colNuevaOrtogonal, filNuevaOrtogonal, cadenaMatrizOrtogonal0)
     listaMatrix1.buscarNombreMatriz('Matriz_Rotacion_Vertical').matrizOrtogonal.crearGrafo('Matriz_Rotacion_Vertical', colNuevaOrtogonal, filNuevaOrtogonal)
     noImagen3 = Image.open('grafos/Matriz_Rotacion_Vertical.dot.png')
@@ -152,7 +151,7 @@ def rotacionVerticalMatriz():
     indice = indice + 1                                 #Indice de la lista simple enlazada para las matrices ortogonales
 
 
-#-------------------------------Proceso transpuesta de una matriz---------------------------------------------
+#-------------------------------Proceso transpuesta de una matriz----------------------------------------------------
 def transpuestaMatriz():
     global listaMatrix1
     global indice
@@ -216,7 +215,7 @@ def limpiarZonaImagen():
     indice = indice + 1                                 #Indice de la lista simple enlazada para las matrices ortogonales
 
 
-#-------------------------------Proceso agregar línea horizontal------------------------------------------------------
+#-------------------------------------Proceso agregar línea horizontal------------------------------------------------
 def agregarLineaHorizontalMatriz():
     global listaMatrix1
     global indice
@@ -250,7 +249,7 @@ def agregarLineaHorizontalMatriz():
     indice = indice + 1                                 #Indice de la lista simple enlazada para las matrices ortogonales
 
 
-#-------------------------------Proceso agregar línea vertical-------------------------------------------------------
+#--------------------------------------Proceso agregar línea vertical-------------------------------------------------
 def agregarLineaVerticallMatriz():
     global listaMatrix1
     global indice
@@ -284,7 +283,7 @@ def agregarLineaVerticallMatriz():
     indice = indice + 1                                 #Indice de la lista simple enlazada para las matrices ortogonales
 
 
-#-----------------------------------------Proceso agregar rectángulo------------------------------------------------------
+#-----------------------------------------Proceso agregar rectángulo--------------------------------------------------
 def agregarRectanguloMatriz():
     global listaMatrix1
     global indice
@@ -330,7 +329,7 @@ def agregarRectanguloMatriz():
 
     indice = indice + 1                                 #Indice de la lista simple enlazada para las matrices ortogonales
 
-#---------------------------------------Proceso agregar Triángulo rectángulo----------------------------------------------
+#---------------------------------------Proceso agregar Triángulo rectángulo------------------------------------------
 def agregarTrianRecMatriz():
     global listaMatrix1
     global indice
@@ -377,6 +376,167 @@ def agregarTrianRecMatriz():
     indice = indice + 1                                 #Indice de la lista simple enlazada para las matrices ortogonales
 
 
+#--------------------------------------Proceso unión de dos matrices---------------------------------------------------
+def unionMatrices():
+    global listaMatrix1
+    global indice
+    global marcoOperaciones
+
+    colOrto1 = listaMatrix1.buscarPosicionMatriz(0).columnas
+    filOrto1 = listaMatrix1.buscarPosicionMatriz(0).filas
+    
+    colOrto2 = listaMatrix1.buscarPosicionMatriz(1).columnas
+    filOrto2 = listaMatrix1.buscarPosicionMatriz(1).filas
+    
+    if (colOrto1 * filOrto1) > (colOrto2 * filOrto2):
+        #Se crea el nodo con posición y NOMBRE
+        listaMatrix1.insertarFinal(indice, 'Matriz_union', colOrto1, filOrto1)
+        cadenaMatrizOrtogonal0 = listaMatrix1.buscarPosicionMatriz(0).matrizOrtogonal.devolvercadena(colOrto1, filOrto1)
+        listaMatrix1.buscarNombreMatriz('Matriz_union').matrizOrtogonal.llenado(colOrto1, filOrto1, cadenaMatrizOrtogonal0)
+        for col in range(colOrto2):
+            for fil in range(filOrto2):
+                if listaMatrix1.buscarPosicionMatriz(1).matrizOrtogonal.buscarNodo(col, fil) == '*':
+                    listaMatrix1.buscarNombreMatriz('Matriz_union').matrizOrtogonal.buscarNodoSustituirDato(col, fil, '*')
+        listaMatrix1.buscarNombreMatriz('Matriz_union').matrizOrtogonal.crearGrafo('Matriz_union', colOrto1, filOrto1)
+    else:
+        listaMatrix1.insertarFinal(indice, 'Matriz_union', colOrto2, filOrto2)
+        cadenaMatrizOrtogonal0 = listaMatrix1.buscarPosicionMatriz(1).matrizOrtogonal.devolvercadena(colOrto2, filOrto2)
+        listaMatrix1.buscarNombreMatriz('Matriz_union').matrizOrtogonal.llenado(colOrto2, filOrto2, cadenaMatrizOrtogonal0)
+        for col in range(colOrto1):
+            for fil in range(filOrto1):
+                if listaMatrix1.buscarPosicionMatriz(0).matrizOrtogonal.buscarNodo(col, fil) == '*':
+                    listaMatrix1.buscarNombreMatriz('Matriz_union').matrizOrtogonal.buscarNodoSustituirDato(col, fil, '*')
+        listaMatrix1.buscarNombreMatriz('Matriz_union').matrizOrtogonal.crearGrafo('Matriz_union', colOrto2, filOrto2)
+    
+    noImagen3 = Image.open('grafos/Matriz_union.dot.png')
+    tamanoImagen3 = noImagen3.resize((250, 250))
+    renderizadoImagen3 = ImageTk.PhotoImage(tamanoImagen3)
+    imagen3lbl = Label(marcoInicial, image=renderizadoImagen3)
+    imagen3lbl.image = renderizadoImagen3
+    imagen3lbl.place(x=570, y=90)
+    
+    unionbtn = Button(marcoOperaciones, text='Unión', state=DISABLED)   #Deshabilitar botón secundario
+    unionbtn.place(x=10, y=10)
+
+    indice = indice + 1                                 #Indice de la lista simple enlazada para las matrices ortogonales
+
+
+#-----------------------------------Proceso intersección de dos matrices-----------------------------------------------
+def interseccionMatrices():
+    global listaMatrix1
+    global indice
+    global marcoOperaciones
+
+    colOrto1 = listaMatrix1.buscarPosicionMatriz(0).columnas
+    filOrto1 = listaMatrix1.buscarPosicionMatriz(0).filas
+    
+    colOrto2 = listaMatrix1.buscarPosicionMatriz(1).columnas
+    filOrto2 = listaMatrix1.buscarPosicionMatriz(1).filas
+    
+    if (colOrto1 * filOrto1) > (colOrto2 * filOrto2):
+    
+        listaMatrix1.insertarFinal(indice, 'Matriz_interseccion', colOrto1, filOrto1)
+        listaMatrix1.buscarNombreMatriz('Matriz_interseccion').matrizOrtogonal.llenadoVacio(colOrto1, filOrto1)
+        for col in range(colOrto2):
+            for fil in range(filOrto2):
+                if listaMatrix1.buscarPosicionMatriz(1).matrizOrtogonal.buscarNodo(col, fil) == '*':
+                    listaMatrix1.buscarNombreMatriz('Matriz_interseccion').matrizOrtogonal.buscarNodoSustituirDato(col, fil, '*')
+
+        for col in range(colOrto1):
+            for fil in range(filOrto1):
+                if (listaMatrix1.buscarNombreMatriz('Matriz_interseccion').matrizOrtogonal.buscarNodo(col, fil) == '*') and (listaMatrix1.buscarPosicionMatriz(0).matrizOrtogonal.buscarNodo(col, fil) == '*'):
+                    listaMatrix1.buscarNombreMatriz('Matriz_interseccion').matrizOrtogonal.buscarNodoSustituirDato(col, fil, '*')
+                else:
+                    listaMatrix1.buscarNombreMatriz('Matriz_interseccion').matrizOrtogonal.buscarNodoSustituirDato(col, fil, '-')
+        listaMatrix1.buscarNombreMatriz('Matriz_interseccion').matrizOrtogonal.crearGrafo('Matriz_interseccion', colOrto1, filOrto1)
+    else:
+        
+        listaMatrix1.insertarFinal(indice, 'Matriz_interseccion', colOrto2, filOrto2)
+        listaMatrix1.buscarNombreMatriz('Matriz_interseccion').matrizOrtogonal.llenadoVacio(colOrto2, filOrto2)
+        for col in range(colOrto1):
+            for fil in range(filOrto1):
+                if listaMatrix1.buscarPosicionMatriz(0).matrizOrtogonal.buscarNodo(col, fil) == '*':
+                    listaMatrix1.buscarNombreMatriz('Matriz_interseccion').matrizOrtogonal.buscarNodoSustituirDato(col, fil, '*')
+
+        for col in range(colOrto2):
+            for fil in range(filOrto2):
+                if (listaMatrix1.buscarNombreMatriz('Matriz_interseccion').matrizOrtogonal.buscarNodo(col, fil) == '*') and (listaMatrix1.buscarPosicionMatriz(1).matrizOrtogonal.buscarNodo(col, fil) == '*'):
+                    listaMatrix1.buscarNombreMatriz('Matriz_interseccion').matrizOrtogonal.buscarNodoSustituirDato(col, fil, '*')
+                else:
+                    listaMatrix1.buscarNombreMatriz('Matriz_interseccion').matrizOrtogonal.buscarNodoSustituirDato(col, fil, '-')
+        listaMatrix1.buscarNombreMatriz('Matriz_interseccion').matrizOrtogonal.crearGrafo('Matriz_interseccion', colOrto2, filOrto2)
+    
+    noImagen3 = Image.open('grafos/Matriz_interseccion.dot.png')
+    tamanoImagen3 = noImagen3.resize((250, 250))
+    renderizadoImagen3 = ImageTk.PhotoImage(tamanoImagen3)
+    imagen3lbl = Label(marcoInicial, image=renderizadoImagen3)
+    imagen3lbl.image = renderizadoImagen3
+    imagen3lbl.place(x=570, y=90)
+    
+    interseccionbtn = Button(marcoOperaciones, text='Intersección', state=DISABLED)   #Deshabilitar botón secundario
+    interseccionbtn.place(x=140, y=10)
+
+    indice = indice + 1                                 #Indice de la lista simple enlazada para las matrices ortogonales
+
+
+#---------------------------------Proceso diferencia simétrica entre de dos matrices-----------------------------------
+def diferenciaSimetricaMatrices():
+    global listaMatrix1
+    global indice
+    global marcoOperaciones
+
+    colOrto1 = listaMatrix1.buscarPosicionMatriz(0).columnas
+    filOrto1 = listaMatrix1.buscarPosicionMatriz(0).filas
+    
+    colOrto2 = listaMatrix1.buscarPosicionMatriz(1).columnas
+    filOrto2 = listaMatrix1.buscarPosicionMatriz(1).filas
+    
+    if (colOrto1 * filOrto1) > (colOrto2 * filOrto2):
+        #Se crea el nodo con posición y NOMBRE
+        listaMatrix1.insertarFinal(indice, 'Matriz_diferencia_simetrica', colOrto1, filOrto1)
+        listaMatrix1.buscarNombreMatriz('Matriz_diferencia_simetrica').matrizOrtogonal.llenadoVacio(colOrto1, filOrto1)
+        for col in range(colOrto2):
+            for fil in range(filOrto2):
+                if listaMatrix1.buscarPosicionMatriz(1).matrizOrtogonal.buscarNodo(col, fil) == '*':
+                    listaMatrix1.buscarNombreMatriz('Matriz_diferencia_simetrica').matrizOrtogonal.buscarNodoSustituirDato(col, fil, '*')
+
+        for col in range(colOrto1):
+            for fil in range(filOrto1):
+                if listaMatrix1.buscarNombreMatriz('Matriz_diferencia_simetrica').matrizOrtogonal.buscarNodo(col, fil) == listaMatrix1.buscarPosicionMatriz(0).matrizOrtogonal.buscarNodo(col, fil):
+                    listaMatrix1.buscarNombreMatriz('Matriz_diferencia_simetrica').matrizOrtogonal.buscarNodoSustituirDato(col, fil, '-')
+                else:
+                    listaMatrix1.buscarNombreMatriz('Matriz_diferencia_simetrica').matrizOrtogonal.buscarNodoSustituirDato(col, fil, '*')
+        listaMatrix1.buscarNombreMatriz('Matriz_diferencia_simetrica').matrizOrtogonal.crearGrafo('Matriz_diferencia_simetrica', colOrto1, filOrto1)
+    else:
+        
+        listaMatrix1.insertarFinal(indice, 'Matriz_diferencia_simetrica', colOrto2, filOrto2)
+        listaMatrix1.buscarNombreMatriz('Matriz_diferencia_simetrica').matrizOrtogonal.llenadoVacio(colOrto2, filOrto2)
+        for col in range(colOrto1):
+            for fil in range(filOrto1):
+                if listaMatrix1.buscarPosicionMatriz(0).matrizOrtogonal.buscarNodo(col, fil) == '*':
+                    listaMatrix1.buscarNombreMatriz('Matriz_diferencia_simetrica').matrizOrtogonal.buscarNodoSustituirDato(col, fil, '*')
+
+        for col in range(colOrto2):
+            for fil in range(filOrto2):
+                if listaMatrix1.buscarNombreMatriz('Matriz_diferencia_simetrica').matrizOrtogonal.buscarNodo(col, fil) == listaMatrix1.buscarPosicionMatriz(1).matrizOrtogonal.buscarNodo(col, fil):
+                    listaMatrix1.buscarNombreMatriz('Matriz_diferencia_simetrica').matrizOrtogonal.buscarNodoSustituirDato(col, fil, '-')
+                else:
+                    listaMatrix1.buscarNombreMatriz('Matriz_diferencia_simetrica').matrizOrtogonal.buscarNodoSustituirDato(col, fil, '*')
+        listaMatrix1.buscarNombreMatriz('Matriz_diferencia_simetrica').matrizOrtogonal.crearGrafo('Matriz_diferencia_simetrica', colOrto2, filOrto2)
+    
+    noImagen3 = Image.open('grafos/Matriz_diferencia_simetrica.dot.png')
+    tamanoImagen3 = noImagen3.resize((250, 250))
+    renderizadoImagen3 = ImageTk.PhotoImage(tamanoImagen3)
+    imagen3lbl = Label(marcoInicial, image=renderizadoImagen3)
+    imagen3lbl.image = renderizadoImagen3
+    imagen3lbl.place(x=570, y=90)
+    
+    diferenciaSimetricabtn = Button(marcoOperaciones, text='Diferencia simétrica', state=DISABLED)   #Deshabilitar botón secundario
+    diferenciaSimetricabtn.place(x=400, y=10)
+
+    indice = indice + 1                                 #Indice de la lista simple enlazada para las matrices ortogonales
+
+
 #---------------------------------Mostrar operaciones que se pueden realizar----------------------------------------
 
 def mostrarOperaciones():
@@ -404,6 +564,15 @@ def mostrarOperaciones():
     else:
         marcoOperaciones = LabelFrame(marcoInicial, text="La operaciones para dos matriz son:", height=120, width=600)
         marcoOperaciones.place(x=40, y= 350)
+        unionbtn = Button(marcoOperaciones, text='Unión', command=unionMatrices)
+        unionbtn.place(x=10, y=10)
+        interseccionbtn = Button(marcoOperaciones, text='Intersección', command=interseccionMatrices)
+        interseccionbtn.place(x=140, y=10)
+        diferenciabtn = Button(marcoOperaciones, text='Diferencia')
+        diferenciabtn.place(x=290, y=10)
+        diferenciaSimetricabtn = Button(marcoOperaciones, text='Diferencia simétrica', command=diferenciaSimetricaMatrices)
+        diferenciaSimetricabtn.place(x=400, y=10)
+        
     
     operacionesbtn = Button(marcoInicial, text="Operaciones", state=DISABLED)       #Deshabilitar botón principal
     operacionesbtn.place(x=200, y=20)

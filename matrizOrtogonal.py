@@ -29,6 +29,11 @@ class matrizOrtogonal():
             for col in range(columnas):
                 self.insertar(cadena[indice], col, fil)                 #dato, columna, fila
                 indice = indice + 1
+
+    def llenadoVacio(self, columnas, filas):                            #Llenado de la matriz con guines, simulando vacío
+        for fil in range(filas):
+            for col in range(columnas):
+                self.insertar('-', col, fil)                            #dato, columna, fila
     
     def mostrarMatriz(self, columnas, filas):                           #Mostrar en consola
         salida = ''
@@ -109,7 +114,7 @@ class matrizOrtogonal():
         temporal = self.filas.buscarCabeceraHorizontal(fila).filaDatos
         temporal2 = temporal.buscarColumna(columna)
         temporalDatoNodo = temporal2.dato
-        return temporalDatoNodo
+        return temporalDatoNodo                                         #Retorna un caracter
     
     def buscarNodoSustituirDato(self, columna, fila, nuevoDato):        #Busca un nodo por sus coordenadas y actualiza su dato
         temporal = self.filas.buscarCabeceraHorizontal(fila).filaDatos

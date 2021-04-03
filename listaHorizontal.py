@@ -46,7 +46,7 @@ class listaHorizontal():
                 print("Columna " , temporal.columna , " fila: " , temporal.fila , " dato: " , temporal.dato)
                 temporal = temporal.derecha
 
-    def buscarColumna(self, columna):               #Buscando una columna entre las cabeceras
+    def buscarColumna(self, columna):                       #Buscando una columna
         if self.verVacioHorizontal() == False:
             temporal = self.inicio
             while temporal is not None:
