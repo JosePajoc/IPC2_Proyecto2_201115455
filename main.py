@@ -71,7 +71,17 @@ def procesarXML():
     cargarArchivobtn = Button(marcoInicial, text="Cargar archivo XML", state=DISABLED)  #Deshabilitar botón principal
     cargarArchivobtn.place(x=50, y=20)
     mostrarImagenes(indice, nombreM1, nombreM2)
-        
+    
+    if indice == 1:
+        operacionesbtn = Button(marcoInicial, text="Operaciones para una matriz", command=mostrarOperaciones1)
+        operacionesbtn.place(x=200, y=20)
+        operaciones2btn = Button(marcoInicial, text="Operaciones para dos matriz", state=DISABLED)
+        operaciones2btn.place(x=400, y=20)
+    else:
+        operacionesbtn = Button(marcoInicial, text="Operaciones para una matriz", command=mostrarOperaciones1)
+        operacionesbtn.place(x=200, y=20)
+        operaciones2btn = Button(marcoInicial, text="Operaciones para dos matriz", command=mostrarOperaciones2)
+        operaciones2btn.place(x=400, y=20)
 
 #-----------------------------------------Mostrar imagenes en los visores--------------------------------------------    
 def mostrarImagenes(indice, nombreM1, nombreM2):
@@ -495,13 +505,13 @@ def diferenciaSimetricaMatrices():
         #Se crea el nodo con posición y NOMBRE
         listaMatrix1.insertarFinal(indice, 'Matriz_diferencia_simetrica', colOrto1, filOrto1)
         listaMatrix1.buscarNombreMatriz('Matriz_diferencia_simetrica').matrizOrtogonal.llenadoVacio(colOrto1, filOrto1)
-        for col in range(colOrto2):
-            for fil in range(filOrto2):
-                if listaMatrix1.buscarPosicionMatriz(1).matrizOrtogonal.buscarNodo(col, fil) == '*':
-                    listaMatrix1.buscarNombreMatriz('Matriz_diferencia_simetrica').matrizOrtogonal.buscarNodoSustituirDato(col, fil, '*')
-
         for col in range(colOrto1):
             for fil in range(filOrto1):
+                if listaMatrix1.buscarPosicionMatriz(0).matrizOrtogonal.buscarNodo(col, fil) == '*':
+                    listaMatrix1.buscarNombreMatriz('Matriz_diferencia_simetrica').matrizOrtogonal.buscarNodoSustituirDato(col, fil, '*')
+
+        for col in range(colOrto2):
+            for fil in range(filOrto2):
                 if listaMatrix1.buscarNombreMatriz('Matriz_diferencia_simetrica').matrizOrtogonal.buscarNodo(col, fil) == listaMatrix1.buscarPosicionMatriz(0).matrizOrtogonal.buscarNodo(col, fil):
                     listaMatrix1.buscarNombreMatriz('Matriz_diferencia_simetrica').matrizOrtogonal.buscarNodoSustituirDato(col, fil, '-')
                 else:
@@ -537,46 +547,116 @@ def diferenciaSimetricaMatrices():
     indice = indice + 1                                 #Indice de la lista simple enlazada para las matrices ortogonales
 
 
-#---------------------------------Mostrar operaciones que se pueden realizar----------------------------------------
-
-def mostrarOperaciones():
+#------------------------------------Proceso diferencia entre de dos matrices-----------------------------------------
+def diferenciaMatrices():
+    global listaMatrix1
+    global indice
     global marcoOperaciones
 
-    if indice == 1:
-        marcoOperaciones = LabelFrame(marcoInicial, text="La operaciones para una matriz son:", height=120, width=600)
-        marcoOperaciones.place(x=40, y= 350)
-        rotacionHorizontal = Button(marcoOperaciones, text='Rotación horizontal', command=rotacionHorizontalMatriz)
-        rotacionHorizontal.place(x=10, y=10)
-        rotacionVertical = Button(marcoOperaciones, text='Rotación vertical', command=rotacionVerticalMatriz)
-        rotacionVertical.place(x=160, y=10)
-        transpuesta = Button(marcoOperaciones, text='Transpuesta', command=transpuestaMatriz)
-        transpuesta.place(x=310, y=10)
-        limpiarZona = Button(marcoOperaciones, text='Limpiar zona', command=limpiarZonaImagen)
-        limpiarZona.place(x=420, y=10)
-        agregarLineaHorizontal = Button(marcoOperaciones, text='Agregar línea horizontal', command=agregarLineaHorizontalMatriz)
-        agregarLineaHorizontal.place(x=10, y=60)
-        agregarLineaVertical = Button(marcoOperaciones, text='Agregar línea vertical', command=agregarLineaVerticallMatriz)
-        agregarLineaVertical.place(x=160, y=60)
-        agregarRectangulo = Button(marcoOperaciones, text='Agregar ractángulo', command=agregarRectanguloMatriz)
-        agregarRectangulo.place(x=290, y=60)
-        agregarTrianguloRectangulo = Button(marcoOperaciones, text='Agregar triángulo rectángulo', command=agregarTrianRecMatriz)
-        agregarTrianguloRectangulo.place(x=410, y=60)
-    else:
-        marcoOperaciones = LabelFrame(marcoInicial, text="La operaciones para dos matriz son:", height=120, width=600)
-        marcoOperaciones.place(x=40, y= 350)
-        unionbtn = Button(marcoOperaciones, text='Unión', command=unionMatrices)
-        unionbtn.place(x=10, y=10)
-        interseccionbtn = Button(marcoOperaciones, text='Intersección', command=interseccionMatrices)
-        interseccionbtn.place(x=140, y=10)
-        diferenciabtn = Button(marcoOperaciones, text='Diferencia')
-        diferenciabtn.place(x=290, y=10)
-        diferenciaSimetricabtn = Button(marcoOperaciones, text='Diferencia simétrica', command=diferenciaSimetricaMatrices)
-        diferenciaSimetricabtn.place(x=400, y=10)
-        
+    colOrto1 = listaMatrix1.buscarPosicionMatriz(0).columnas
+    filOrto1 = listaMatrix1.buscarPosicionMatriz(0).filas
     
-    operacionesbtn = Button(marcoInicial, text="Operaciones", state=DISABLED)       #Deshabilitar botón principal
+    colOrto2 = listaMatrix1.buscarPosicionMatriz(1).columnas
+    filOrto2 = listaMatrix1.buscarPosicionMatriz(1).filas
+    
+    if (colOrto1 * filOrto1) > (colOrto2 * filOrto2):
+        #Se crea el nodo con posición y NOMBRE
+        listaMatrix1.insertarFinal(indice, 'Matriz_diferencia', colOrto1, filOrto1)
+        listaMatrix1.buscarNombreMatriz('Matriz_diferencia').matrizOrtogonal.llenadoVacio(colOrto1, filOrto1)
+        for col in range(colOrto1):
+            for fil in range(filOrto1):
+                if listaMatrix1.buscarPosicionMatriz(0).matrizOrtogonal.buscarNodo(col, fil) == '*':
+                    listaMatrix1.buscarNombreMatriz('Matriz_diferencia').matrizOrtogonal.buscarNodoSustituirDato(col, fil, '*')
+
+        for col in range(colOrto2):
+            for fil in range(filOrto2):
+                if (listaMatrix1.buscarNombreMatriz('Matriz_diferencia').matrizOrtogonal.buscarNodo(col, fil) == '*') and (listaMatrix1.buscarPosicionMatriz(1).matrizOrtogonal.buscarNodo(col, fil) == '*'):
+                    listaMatrix1.buscarNombreMatriz('Matriz_diferencia').matrizOrtogonal.buscarNodoSustituirDato(col, fil, '-')
+        listaMatrix1.buscarNombreMatriz('Matriz_diferencia').matrizOrtogonal.crearGrafo('Matriz_diferencia', colOrto1, filOrto1)
+    else:
+        
+        listaMatrix1.insertarFinal(indice, 'Matriz_diferencia', colOrto2, filOrto2)
+        listaMatrix1.buscarNombreMatriz('Matriz_diferencia').matrizOrtogonal.llenadoVacio(colOrto2, filOrto2)
+        for col in range(colOrto1):
+            for fil in range(filOrto1):
+                if listaMatrix1.buscarPosicionMatriz(0).matrizOrtogonal.buscarNodo(col, fil) == '*':
+                    listaMatrix1.buscarNombreMatriz('Matriz_diferencia').matrizOrtogonal.buscarNodoSustituirDato(col, fil, '*')
+
+        for col in range(colOrto2):
+            for fil in range(filOrto2):
+                if (listaMatrix1.buscarNombreMatriz('Matriz_diferencia').matrizOrtogonal.buscarNodo(col, fil) == '*') and  (listaMatrix1.buscarPosicionMatriz(1).matrizOrtogonal.buscarNodo(col, fil) == '*'):
+                    listaMatrix1.buscarNombreMatriz('Matriz_diferencia').matrizOrtogonal.buscarNodoSustituirDato(col, fil, '-')
+        listaMatrix1.buscarNombreMatriz('Matriz_diferencia').matrizOrtogonal.crearGrafo('Matriz_diferencia', colOrto2, filOrto2)
+    
+    noImagen3 = Image.open('grafos/Matriz_diferencia.dot.png')
+    tamanoImagen3 = noImagen3.resize((250, 250))
+    renderizadoImagen3 = ImageTk.PhotoImage(tamanoImagen3)
+    imagen3lbl = Label(marcoInicial, image=renderizadoImagen3)
+    imagen3lbl.image = renderizadoImagen3
+    imagen3lbl.place(x=570, y=90)
+    
+    diferenciabtn = Button(marcoOperaciones, text='Diferencia', state=DISABLED)   #Deshabilitar botón secundario
+    diferenciabtn.place(x=290, y=10)
+
+    indice = indice + 1                                 #Indice de la lista simple enlazada para las matrices ortogonales
+
+
+#------------------------------------------Operaciones para una matriz-----------------------------------------------
+
+def mostrarOperaciones1():
+    global marcoOperaciones
+    messagebox.showinfo('Información', 'Las operaciones se aplicaran sobre la matriz cargada en el visor 1')
+
+    marcoOperaciones = LabelFrame(marcoInicial, text="La operaciones para una matriz son:", height=120, width=600)
+    marcoOperaciones.place(x=40, y= 350)
+    rotacionHorizontal = Button(marcoOperaciones, text='Rotación horizontal', command=rotacionHorizontalMatriz)
+    rotacionHorizontal.place(x=10, y=10)
+    rotacionVertical = Button(marcoOperaciones, text='Rotación vertical', command=rotacionVerticalMatriz)
+    rotacionVertical.place(x=160, y=10)
+    transpuesta = Button(marcoOperaciones, text='Transpuesta', command=transpuestaMatriz)
+    transpuesta.place(x=310, y=10)
+    limpiarZona = Button(marcoOperaciones, text='Limpiar zona', command=limpiarZonaImagen)
+    limpiarZona.place(x=420, y=10)
+    agregarLineaHorizontal = Button(marcoOperaciones, text='Agregar línea horizontal', command=agregarLineaHorizontalMatriz)
+    agregarLineaHorizontal.place(x=10, y=60)
+    agregarLineaVertical = Button(marcoOperaciones, text='Agregar línea vertical', command=agregarLineaVerticallMatriz)
+    agregarLineaVertical.place(x=160, y=60)
+    agregarRectangulo = Button(marcoOperaciones, text='Agregar ractángulo', command=agregarRectanguloMatriz)
+    agregarRectangulo.place(x=290, y=60)
+    agregarTrianguloRectangulo = Button(marcoOperaciones, text='Agregar triángulo rectángulo', command=agregarTrianRecMatriz)
+    agregarTrianguloRectangulo.place(x=410, y=60)
+    
+    operacionesbtn = Button(marcoInicial, text="Operaciones para una matriz", state=DISABLED)       #Deshabilitar botón principal
     operacionesbtn.place(x=200, y=20)
 
+
+#-----------------------------------------Operaciones para dos matrices------------------------------------------------
+
+def mostrarOperaciones2():
+    global marcoOperaciones
+    marcoOperaciones = LabelFrame(marcoInicial, text="La operaciones para dos matriz son:", height=120, width=600)
+    marcoOperaciones.place(x=40, y= 350)
+    unionbtn = Button(marcoOperaciones, text='Unión', command=unionMatrices)
+    unionbtn.place(x=10, y=10)
+    interseccionbtn = Button(marcoOperaciones, text='Intersección', command=interseccionMatrices)
+    interseccionbtn.place(x=140, y=10)
+    diferenciabtn = Button(marcoOperaciones, text='Diferencia', command=diferenciaMatrices)
+    diferenciabtn.place(x=290, y=10)
+    diferenciaSimetricabtn = Button(marcoOperaciones, text='Diferencia simétrica', command=diferenciaSimetricaMatrices)
+    diferenciaSimetricabtn.place(x=400, y=10)
+
+    operaciones2btn = Button(marcoInicial, text="Operaciones para dos matriz", state=DISABLED)       #Deshabilitar botón principal
+    operaciones2btn.place(x=400, y=20)
+    
+
+#-----------------------------------------Reporte de procesos realizados------------------------------------------------
+
+def reporteMatrices():
+    global indice
+    if indice > 1:
+        asd
+    else:
+        messagebox.showinfo('No se puede realizar un roperte porque no se ha echo ninguna operación...')
 
 #-------------------------------------Abrir cuadro de dialogo para buscar--------------------------------------------
 def buscarXML():
@@ -588,12 +668,14 @@ def buscarXML():
 #------------------------------------------#Widgets------------------------------------------------------------------
 cargarArchivobtn = Button(marcoInicial, text="Cargar archivo XML", command=buscarXML)
 cargarArchivobtn.place(x=50, y=20)
-operacionesbtn = Button(marcoInicial, text="Operaciones", command=mostrarOperaciones)
+operacionesbtn = Button(marcoInicial, text="Operaciones para una matriz", state=DISABLED)
 operacionesbtn.place(x=200, y=20)
-reportesArchivobtn = Button(marcoInicial, text="Reportes" )
-reportesArchivobtn.place(x=320, y=20)
+operaciones2btn = Button(marcoInicial, text="Operaciones para dos matriz", state=DISABLED)
+operaciones2btn.place(x=400, y=20)
+reportesArchivobtn = Button(marcoInicial, text="Reportes", command=reporteMatrices)
+reportesArchivobtn.place(x=600, y=20)
 ayudaArchivobtn = Button(marcoInicial, text="Ayuda")
-ayudaArchivobtn.place(x=410, y=20)
+ayudaArchivobtn.place(x=700, y=20)
 
 visor1lbl = Label(marcoInicial, text='Visor 1')
 visor1lbl.place(x=40, y=60)
