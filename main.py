@@ -5,6 +5,7 @@ from nodoMatrix import listaMatrizOrtogonal         #Módulo para crear lista en
 from tkinter.simpledialog import *                  #Dialogos de entrada, debe ir antes del PIL caso contrario da error
 from PIL import Image, ImageTk                      #Instalar módulo, pip install Pillow, para usar imagenes con más opciones
 from datetime import datetime                       #Módulo para hacer uso de la fecha y hora actual
+import webbrowser                                   #Módulo para abrir automaticamente el navegador
 
 import xml.etree.ElementTree as ET                  #importando libreria para manipular XML
 
@@ -608,7 +609,6 @@ def diferenciaMatrices():
 
 
 #------------------------------------------Operaciones para una matriz-----------------------------------------------
-
 def mostrarOperaciones1():
     global marcoOperaciones
     messagebox.showinfo('Información', 'Las operaciones se aplicaran sobre la matriz cargada en el visor 1')
@@ -635,9 +635,7 @@ def mostrarOperaciones1():
     operacionesbtn = Button(marcoInicial, text="Operaciones para una matriz", state=DISABLED)       #Deshabilitar botón principal
     operacionesbtn.place(x=200, y=20)
 
-
 #-----------------------------------------Operaciones para dos matrices------------------------------------------------
-
 def mostrarOperaciones2():
     global marcoOperaciones
     marcoOperaciones = LabelFrame(marcoInicial, text="La operaciones para dos matriz son:", height=120, width=600)
@@ -654,23 +652,28 @@ def mostrarOperaciones2():
     operaciones2btn = Button(marcoInicial, text="Operaciones para dos matriz", state=DISABLED)       #Deshabilitar botón principal
     operaciones2btn.place(x=400, y=20)
     
-
 #-----------------------------------------Reporte de procesos realizados------------------------------------------------
-
 def reporteMatrices():
     global indice
+    global listaMatrix1
+    
     if indice > 1:
-        asd
+        listaMatrix1.crearReporte()
+        messagebox.showinfo('Información', 'Se ha credao el reporte en grafos/index.html')
     else:
         messagebox.showinfo('Información', 'No se puede realizar un reporte porque no se ha echo ninguna operación...')
+
+#----------------------------------------- Mostrar a ayuda al usuario------------------------------------------------
+def abrirPDF():
+    messagebox.showinfo('Información', 'Estudiante: José Ernesto Pajoc Raymundo.\nCarné: 201115455\n\nA continuación se mostrará la documentación del programa')
+    webbrowser.open_new_tab("Documentacion\prueba.pdf")
 
 #-------------------------------------Abrir cuadro de dialogo para buscar--------------------------------------------
 def buscarXML():
     #Cuadro de dialogo para buscar y luego asignarlo a la variable texto
     rutaXML = filedialog.askopenfilename(title = "Seleccionar archivo XML")
     cargarXML(rutaXML)                                          #Método para abrir el archivo XML
-       
-    
+        
 #------------------------------------------#Widgets------------------------------------------------------------------
 cargarArchivobtn = Button(marcoInicial, text="Cargar archivo XML", command=buscarXML)
 cargarArchivobtn.place(x=50, y=20)
@@ -680,7 +683,7 @@ operaciones2btn = Button(marcoInicial, text="Operaciones para dos matriz", state
 operaciones2btn.place(x=400, y=20)
 reportesArchivobtn = Button(marcoInicial, text="Reportes", command=reporteMatrices)
 reportesArchivobtn.place(x=600, y=20)
-ayudaArchivobtn = Button(marcoInicial, text="Ayuda")
+ayudaArchivobtn = Button(marcoInicial, text="Ayuda", command=abrirPDF)
 ayudaArchivobtn.place(x=700, y=20)
 
 visor1lbl = Label(marcoInicial, text='Visor 1')
@@ -709,6 +712,5 @@ renderizadoImagen3 = ImageTk.PhotoImage(tamanoImagen3)
 imagen3lbl = Label(marcoInicial, image=renderizadoImagen3)
 imagen3lbl.image = renderizadoImagen3
 imagen3lbl.place(x=570, y=90)
-
 
 ventanaInicial.mainloop()                                       #Ejecutar hasta cerrar

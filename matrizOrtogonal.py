@@ -120,7 +120,7 @@ class matrizOrtogonal():
         temporal = self.filas.buscarCabeceraHorizontal(fila).filaDatos
         temporal2 = temporal.buscarColumna(columna)
         temporal2.dato = nuevoDato
-        
+    
 
 '''
 matriz1 = matrizOrtogonal()
