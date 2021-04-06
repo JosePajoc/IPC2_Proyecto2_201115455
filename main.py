@@ -6,7 +6,6 @@ from tkinter.simpledialog import *                  #Dialogos de entrada, debe i
 from PIL import Image, ImageTk                      #Instalar módulo, pip install Pillow, para usar imagenes con más opciones
 from datetime import datetime                       #Módulo para hacer uso de la fecha y hora actual
 import webbrowser                                   #Módulo para abrir automaticamente el navegador
-
 import xml.etree.ElementTree as ET                  #importando libreria para manipular XML
 
 
@@ -17,6 +16,9 @@ ventanaInicial.resizable(False, False)                          #No permitir cam
 
 marcoInicial = Frame(ventanaInicial, width="850", height="500")
 marcoInicial.pack()                                             #Marco agregado a la ventana
+
+
+#----------------> LAS MATRICES NO PUEDEN LLEVAR # EN EL NOMBRE YA QUE ESTAS NO LAS RECONOCE HTML PARA MOSTRA LA IMAGEN
 
 
 #--------------------------------------------Manejo del XML-----------------------------------------------------------
@@ -660,13 +662,14 @@ def reporteMatrices():
     if indice > 1:
         listaMatrix1.crearReporte()
         messagebox.showinfo('Información', 'Se ha credao el reporte en grafos/index.html')
+        webbrowser.open_new_tab("grafos\index.html")
     else:
         messagebox.showinfo('Información', 'No se puede realizar un reporte porque no se ha echo ninguna operación...')
 
 #----------------------------------------- Mostrar a ayuda al usuario------------------------------------------------
 def abrirPDF():
     messagebox.showinfo('Información', 'Estudiante: José Ernesto Pajoc Raymundo.\nCarné: 201115455\n\nA continuación se mostrará la documentación del programa')
-    webbrowser.open_new_tab("Documentacion\prueba.pdf")
+    webbrowser.open_new_tab("Documentacion\Jose_pajoc_201115455.pdf")
 
 #-------------------------------------Abrir cuadro de dialogo para buscar--------------------------------------------
 def buscarXML():
